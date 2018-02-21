@@ -580,5 +580,8 @@
     <!-- Specify if the fingerprint hardware support gestures-->
     <bool name="config_fingerprintSupportsGestures">true</bool>
 
+     <!-- Whether the new Auto Selection Network UI should be shown -->
+     <bool name="config_enableNewAutoSelectNetworkUI">true</bool>
+
 </resources>
 
