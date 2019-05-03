@@ -25,6 +25,10 @@ TARGET_SCREEN_DENSITY := 420
 TARGET_SURFACEFLINGER_FOD_LIB := //$(DEVICE_PATH):libfod_extension.racer
 TARGET_USES_FOD_ZPOS := true
 
+# FM
+BOARD_HAVE_QCOM_FM := true
+BOARD_HAS_QCA_FM_SOC := "cherokee"
+
 # Kernel
 TARGET_KERNEL_CONFIG := vendor/racer_defconfig
 
