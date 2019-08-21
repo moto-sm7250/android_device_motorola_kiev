@@ -10,6 +10,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.fingerprint=goodix
 
+# FM
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.fm.use_audio_session=true
+
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.sf.color_mode=0 \
