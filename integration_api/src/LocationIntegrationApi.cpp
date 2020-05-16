@@ -69,7 +69,8 @@ bool LocationIntegrationApi::configConstellations(
             svTypeConfig.size = sizeof(svTypeConfig);
             svTypeConfig.enabledSvTypesMask =
                     GNSS_SV_TYPES_MASK_GLO_BIT|GNSS_SV_TYPES_MASK_BDS_BIT|
-                    GNSS_SV_TYPES_MASK_QZSS_BIT|GNSS_SV_TYPES_MASK_GAL_BIT;
+                    GNSS_SV_TYPES_MASK_QZSS_BIT|GNSS_SV_TYPES_MASK_GAL_BIT|
+                    GNSS_SV_TYPES_MASK_NAVIC_BIT;
             GnssSvIdConfig svIdConfig = {};
             svIdConfig.size = sizeof(GnssSvIdConfig);
 
@@ -120,6 +121,11 @@ bool LocationIntegrationApi::configConstellations(
                         svMaskPtr = nullptr;
                     }
                     break;
+                case GNSS_CONSTELLATION_TYPE_NAVIC:
+                    svTypeMask = (GnssSvTypesMask) GNSS_SV_TYPES_MASK_NAVIC_BIT;
+                    svMaskPtr = &svIdConfig.navicBlacklistSvMask;
+                    initialSvId = GNSS_SV_CONFIG_NAVIC_INITIAL_SV_ID;
+                break;
                 default:
                     break;
                 }
@@ -150,13 +156,15 @@ bool LocationIntegrationApi::configConstellations(
                      "bds blacklist mask =0x%" PRIx64 ", "
                      "gal blacklist mask =0x%" PRIx64 ",\n"
                      "sbas blacklist mask =0x%" PRIx64 ", ",
+                     "Navic blacklist mask =0x%" PRIx64 ", ",
                      svTypeConfig.enabledSvTypesMask,
                      svTypeConfig.blacklistedSvTypesMask,
                      svIdConfig.gloBlacklistSvMask,
                      svIdConfig.qzssBlacklistSvMask,
                      svIdConfig.bdsBlacklistSvMask,
                      svIdConfig.galBlacklistSvMask,
-                     svIdConfig.sbasBlacklistSvMask);
+                     svIdConfig.sbasBlacklistSvMask,
+                     svIdConfig.navicBlacklistSvMask);
             mApiImpl->configConstellations(svTypeConfig, svIdConfig);
             retVal = true;
         }
@@ -196,6 +204,21 @@ bool LocationIntegrationApi::deleteAllAidingData() {
     if (mApiImpl) {
         GnssAidingData aidingData = {};
         aidingData.deleteAll = true;
+        aidingData.posEngineMask = POSITION_ENGINE_MASK_ALL;
+        mApiImpl->gnssDeleteAidingData(aidingData);
+        return true;
+    } else {
+        LOC_LOGe ("NULL mApiImpl");
+        return false;
+    }
+}
+
+bool LocationIntegrationApi::deleteAidingData(AidingDataDeletionMask aidingDataMask) {
+    if (mApiImpl) {
+        GnssAidingData aidingData = {};
+        aidingData.deleteAll = false;
+        aidingData.sv.svTypeMask = GNSS_AIDING_DATA_SV_TYPE_MASK_ALL;
+        aidingData.sv.svMask = GNSS_AIDING_DATA_SV_EPHEMERIS_BIT;
         aidingData.posEngineMask = POSITION_ENGINE_MASK_ALL;
         mApiImpl->gnssDeleteAidingData(aidingData);
         return true;
@@ -256,4 +279,50 @@ bool LocationIntegrationApi::configRobustLocation(bool enable, bool enableForE91
     }
 }
 
+bool LocationIntegrationApi::getRobustLocationConfig() {
+    if (mApiImpl) {
+        // mApiImpl->getRobustLocationConfig returns none-zero when
+        // there is no callback
+        return (mApiImpl->getRobustLocationConfig() == 0);
+    } else {
+        LOC_LOGe ("NULL mApiImpl");
+        return false;
+    }
+}
+
+bool LocationIntegrationApi::configMinGpsWeek(uint16_t minGpsWeek) {
+    if (mApiImpl && minGpsWeek != 0) {
+        return (mApiImpl->configMinGpsWeek(minGpsWeek) == 0);
+    } else {
+        LOC_LOGe ("NULL mApiImpl");
+        return false;
+    }
+}
+
+bool LocationIntegrationApi::getMinGpsWeek() {
+    if (mApiImpl) {
+        return (mApiImpl->getMinGpsWeek() == 0);
+    } else {
+        LOC_LOGe ("NULL mApiImpl or callback");
+        return false;
+    }
+}
+
+bool LocationIntegrationApi::configBodyToSensorMountParams(
+        const BodyToSensorMountParams& b2sParams) {
+    if (mApiImpl) {
+        ::BodyToSensorMountParams halB2sParams = {};
+        halB2sParams.rollOffset  = b2sParams.rollOffset;
+        halB2sParams.pitchOffset = b2sParams.pitchOffset;
+        halB2sParams.yawOffset   = b2sParams.yawOffset;
+        halB2sParams.offsetUnc   = b2sParams.offsetUnc;
+        mApiImpl->configBodyToSensorMountParams(halB2sParams);
+        return true;
+    } else {
+        LOC_LOGe ("NULL mApiImpl");
+        return false;
+    }
+}
+
 } // namespace location_integration
+

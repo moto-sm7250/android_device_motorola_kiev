@@ -1,11 +1,11 @@
-# configure.ac -- Autoconf script for gps location-utils
+# configure.ac -- Autoconf script for ntrip-client
 #
 # Process this file with autoconf to produce a configure script
 
 # Requires autoconf tool later than 2.61
 AC_PREREQ(2.61)
-# Initialize the loc_socket package version 1.0.0
-AC_INIT([loc-socket],1.0.0)
+# Initialize the ntrip client package version 1.0.0
+AC_INIT([ntrip-client-integration-api-testlib],1.0.0)
 # Does not strictly follow GNU Coding standards
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 # Disables auto rebuilding of configure, Makefile.ins
@@ -33,38 +33,6 @@ PKG_CHECK_MODULES([GPSUTILS], [gps-utils])
 AC_SUBST([GPSUTILS_CFLAGS])
 AC_SUBST([GPSUTILS_LIBS])
 
-PKG_CHECK_MODULES([QMIFW], [qmi-framework])
-AC_SUBST([QMIFW_CFLAGS])
-AC_SUBST([QMIFW_LIBS])
-
-AC_ARG_WITH([external_ap],
-    AC_HELP_STRING([--with-external_ap=@<:@dir@:>@],
-        [Using External Application Processor]),
-    [],
-    with_external_ap=no)
-
-if test "x$with_external_ap" != "xno"; then
-    CPPFLAGS="${CPPFLAGS} -DFEATURE_EXTERNAL_AP"
-else
-    # Checks for libraries.
-    PKG_CHECK_MODULES([CUTILS], [libcutils])
-    AC_SUBST([CUTILS_CFLAGS])
-    AC_SUBST([CUTILS_LIBS])
-fi
-
-AC_ARG_WITH([kernel-qrtr],
-       AC_HELP_STRING([--with-kernel-qrtr],
-          [enable kernel qrtr, kernel supports qrtr]))
-AC_ARG_ENABLE([kernel-qrtr],
-         [  --enable-kernel-qrtr kernel qrtr is enabled],
-         [case "${enableval}" in
-             yes) kernelqrtr=true ;;
-             no)  kernelqrtr=false ;;
-             *) AC_MSG_ERROR([bad value ${enableval} for --enable-kernel-qrtr]) ;;
-         esac],[kernelqrtr=false])
-
-AM_CONDITIONAL(USE_QSOCKET, test "x${kernelqrtr}" = "xfalse")
-
 AC_ARG_WITH([glib],
       AC_HELP_STRING([--with-glib],
          [enable glib, building HLOS systems which use glib]))
@@ -84,9 +52,10 @@ fi
 
 AM_CONDITIONAL(USE_GLIB, test "x${with_glib}" = "xyes")
 
+
 AC_CONFIG_FILES([ \
         Makefile \
-        loc-socket.pc
+        ntrip-client-integration-api-testlib.pc
         ])
 
 AC_OUTPUT

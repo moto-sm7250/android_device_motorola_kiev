@@ -39,6 +39,9 @@ LOCAL_HEADER_LIBRARIES := \
     libloc_core_headers \
     libgps.utils_headers \
     libloc_pla_headers \
-    liblocation_api_headers
+    liblocation_api_headers \
+    libqmi_common_headers \
+    libqmi_cci_headers
+
 LOCAL_CFLAGS += $(GNSS_CFLAGS)
 include $(BUILD_SHARED_LIBRARY)
