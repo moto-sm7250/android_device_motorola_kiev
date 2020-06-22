@@ -60,6 +60,8 @@ Constants
 using namespace std;
 using namespace loc_util;
 
+static const char SERVICE_NAME[] = "locapiservice";
+
 class SockNode {
     const int32_t mId1;
     const int32_t mId2;
@@ -125,8 +127,11 @@ public:
             return LocIpc::getLocIpcLocalSender(sock);
         case SockNode::EAP:
             if (createFsNode) {
-                if (nullptr == fopen(sock, "w")) {
-                    LOC_LOGe("<-- failed to open file %s", sock);
+                FILE * pFile = fopen(sock, "w");
+                if (nullptr == pFile) {
+                    LOC_LOGe("<-- failed to open file %s error: %s", sock, strerror(errno));
+                } else {
+                    fclose (pFile);
                 }
             }
             return LocIpc::getLocIpcQrtrSender(getId1(), getId2());
@@ -172,7 +177,7 @@ enum ELocMsgID {
     E_LOCAPI_UPDATE_TRACKING_OPTIONS_MSG_ID = 8,
 
     // control
-    E_LOCAPI_CONTROL_UPDATE_CONFIG_MSG_ID = 9,
+    E_LOCAPI_CONTROL_UPDATE_CONFIG_MSG_ID = 9, // this message id has been deprecated
     E_LOCAPI_CONTROL_DELETE_AIDING_DATA_MSG_ID = 10,
     E_LOCAPI_CONTROL_UPDATE_NETWORK_AVAILABILITY_MSG_ID = 11,
 
@@ -224,6 +229,7 @@ enum ELocMsgID {
     E_INTAPI_CONFIG_ROBUST_LOCATION_MSG_ID  = 205,
     E_INTAPI_CONFIG_MIN_GPS_WEEK_MSG_ID  = 206,
     E_INTAPI_CONFIG_BODY_TO_SENSOR_MOUNT_PARAMS_MSG_ID = 207,
+    E_INTAPI_CONFIG_MIN_SV_ELEVATION_MSG_ID = 208,
 
     // integration API config retrieval request/response
     E_INTAPI_GET_ROBUST_LOCATION_CONFIG_REQ_MSG_ID  = 300,
@@ -232,6 +238,8 @@ enum ELocMsgID {
     E_INTAPI_GET_MIN_GPS_WEEK_REQ_MSG_ID  = 302,
     E_INTAPI_GET_MIN_GPS_WEEK_RESP_MSG_ID  = 303,
 
+    E_INTAPI_GET_MIN_SV_ELEVATION_REQ_MSG_ID  = 304,
+    E_INTAPI_GET_MIN_SV_ELEVATION_RESP_MSG_ID  = 305,
 };
 
 typedef uint32_t LocationCallbacksMask;
@@ -338,6 +346,45 @@ struct LocAPIMsgHeader
             memset(mSocketName, 0, MAX_SOCKET_PATHNAME_LENGTH);
             strlcpy(mSocketName, name, MAX_SOCKET_PATHNAME_LENGTH);
         }
+
+    inline bool isValidMsg(uint32_t msgSize) {
+        bool msgValid = true;
+        if (msgSize < sizeof(LocAPIMsgHeader)) {
+            LOC_LOGe("payload size %d smaller than minimum payload size %d",
+                     msgSize, sizeof(LocAPIMsgHeader));
+             msgValid = false;
+        } else if (msgVersion != LOCATION_REMOTE_API_MSG_VERSION) {
+            LOC_LOGe("msg id %d, msg version %d not matching with expected version %d",
+                     msgId, msgVersion, LOCATION_REMOTE_API_MSG_VERSION);
+             msgValid = false;
+        }
+        return msgValid;
+    }
+
+    bool isValidClientMsg(uint32_t msgSize) {
+        bool msgValid = isValidMsg(msgSize);
+        if ((true== msgValid) &&
+                ((strncmp(mSocketName, SOCKET_LOC_CLIENT_DIR,
+                          sizeof(SOCKET_LOC_CLIENT_DIR)-1) != 0) &&
+                 (strncmp(mSocketName, EAP_LOC_CLIENT_DIR,
+                          sizeof(EAP_LOC_CLIENT_DIR)-1) != 0))) {
+            LOC_LOGe("msg not from expected client");
+            msgValid = false;
+        }
+
+        return msgValid;
+    }
+
+    bool isValidServerMsg(uint32_t msgSize) {
+        bool msgValid = isValidMsg(msgSize);
+        if ((true== msgValid) &&
+                (strncmp(mSocketName, SERVICE_NAME, sizeof(SERVICE_NAME)) != 0)) {
+            LOC_LOGe("msg not from expected server %s", SERVICE_NAME);
+            msgValid = false;
+        }
+
+        return msgValid;
+    }
 };
 
 /******************************************************************************
@@ -537,16 +584,6 @@ struct LocAPIResumeGeofencesReqMsg: LocAPIMsgHeader
 /******************************************************************************
 IPC message structure - control
 ******************************************************************************/
-// defintion for message with msg id of E_LOCAPI_CONTROL_UPDATE_CONFIG_MSG_ID
-struct LocAPIUpdateConfigReqMsg: LocAPIMsgHeader
-{
-    GnssConfig gnssConfig;
-
-    inline LocAPIUpdateConfigReqMsg(const char* name, GnssConfig& config) :
-        LocAPIMsgHeader(name, E_LOCAPI_CONTROL_UPDATE_CONFIG_MSG_ID),
-        gnssConfig(config) { }
-};
-
 // defintion for message with msg id of E_LOCAPI_CONTROL_DELETE_AIDING_DATA_MSG_ID
 struct LocAPIDeleteAidingDataReqMsg: LocAPIMsgHeader
 {
@@ -805,6 +842,16 @@ struct LocConfigB2sMountParamsReqMsg: LocAPIMsgHeader
         mB2sParams(b2sParams) { }
 };
 
+struct LocConfigMinSvElevationReqMsg: LocAPIMsgHeader
+{
+    uint8_t mMinSvElevation;
+
+    inline LocConfigMinSvElevationReqMsg(const char* name,
+                                         uint8_t minSvElevation) :
+        LocAPIMsgHeader(name, E_INTAPI_CONFIG_MIN_SV_ELEVATION_MSG_ID),
+        mMinSvElevation(minSvElevation) { }
+};
+
 /******************************************************************************
 IPC message structure - Location Integration API Get request/response message
 ******************************************************************************/
@@ -833,13 +880,27 @@ struct LocConfigGetMinGpsWeekReqMsg: LocAPIMsgHeader
 
 struct LocConfigGetMinGpsWeekRespMsg: LocAPIMsgHeader
 {
-    uint32_t mMinGpsWeek;
+    uint16_t mMinGpsWeek;
     inline LocConfigGetMinGpsWeekRespMsg(const char* name,
-                                     uint32_t minGpsWeek) :
+                                         uint16_t minGpsWeek) :
         LocAPIMsgHeader(name, E_INTAPI_GET_MIN_GPS_WEEK_RESP_MSG_ID),
         mMinGpsWeek(minGpsWeek) { }
 };
 
+struct LocConfigGetMinSvElevationReqMsg: LocAPIMsgHeader
+{
+    inline LocConfigGetMinSvElevationReqMsg(const char* name) :
+        LocAPIMsgHeader(name, E_INTAPI_GET_MIN_SV_ELEVATION_REQ_MSG_ID) { }
+};
+
+struct LocConfigGetMinSvElevationRespMsg: LocAPIMsgHeader
+{
+    uint8_t mMinSvElevation;
+    inline LocConfigGetMinSvElevationRespMsg(const char* name,
+                                             uint8_t minSvElevation) :
+        LocAPIMsgHeader(name, E_INTAPI_GET_MIN_SV_ELEVATION_RESP_MSG_ID),
+        mMinSvElevation(minSvElevation) { }
+};
 
 /******************************************************************************
 IPC message structure - ping

@@ -68,6 +68,7 @@ bool LocationClientApi::startPositionSession(
         LocationCb locationCallback,
         ResponseCb responseCallback) {
 
+    loc_boot_kpi_marker("L - LCA standard startFix, tbf %d", intervalInMs);
     //Input parameter check
     if (!locationCallback) {
         LOC_LOGe ("NULL locationCallback");
@@ -113,11 +114,7 @@ bool LocationClientApi::startPositionSession(
         const GnssReportCbs& gnssReportCallbacks,
         ResponseCb responseCallback) {
 
-    //Input parameter check
-    if (!gnssReportCallbacks.gnssLocationCallback) {
-        LOC_LOGe ("gnssLocation Callbacks can't be NULL");
-        return false;
-    }
+    loc_boot_kpi_marker("L - LCA Extended startFix, tbf %d", intervalInMs);
 
     if (!mApiImpl) {
         LOC_LOGe ("NULL mApiImpl");
@@ -167,12 +164,7 @@ bool LocationClientApi::startPositionSession(
         const EngineReportCbs& engReportCallbacks,
         ResponseCb responseCallback) {
 
-    //Input parameter check
-    if (!engReportCallbacks.engLocationsCallback) {
-        LOC_LOGe ("engLocations Callbacks can't be NULL");
-        return false;
-    }
-
+    loc_boot_kpi_marker("L - LCA Fused startFix, tbf %d", intervalInMs);
     if (!mApiImpl) {
         LOC_LOGe ("NULL mApiImpl");
         return false;
@@ -481,13 +473,15 @@ void LocationClientApi::getGnssEnergyConsumed(
         GnssEnergyConsumedCb gnssEnergyConsumedCallback,
         ResponseCb responseCallback) {
 
-    if (mApiImpl && gnssEnergyConsumedCallback) {
-        mApiImpl->getGnssEnergyConsumed(gnssEnergyConsumedCallback,
-                                        responseCallback);
-    } else {
+    if (!gnssEnergyConsumedCallback) {
         if (responseCallback) {
             responseCallback(LOCATION_RESPONSE_PARAM_INVALID);
         }
+    } else if (mApiImpl) {
+        mApiImpl->getGnssEnergyConsumed(gnssEnergyConsumedCallback,
+                                        responseCallback);
+    } else {
+        LOC_LOGe ("NULL mApiImpl");
     }
 }
 
@@ -495,13 +489,11 @@ void LocationClientApi::updateLocationSystemInfoListener(
     LocationSystemInfoCb locSystemInfoCallback,
     ResponseCb responseCallback) {
 
-    if (mApiImpl && locSystemInfoCallback) {
+    if (mApiImpl) {
         mApiImpl->updateLocationSystemInfoListener(
             locSystemInfoCallback, responseCallback);
     } else {
-        if (responseCallback) {
-            responseCallback(LOCATION_RESPONSE_PARAM_INVALID);
-        }
+        LOC_LOGe ("NULL mApiImpl");
     }
 }
 
@@ -559,7 +551,10 @@ DECLARE_TBL(GnssLocationNavSolutionMask) = {
     {LOCATION_SBAS_INTEGRITY_BIT, "SBAS_INTEGRITY"},
     {LOCATION_NAV_CORRECTION_DGNSS_BIT, "NAV_CORR_DGNSS"},
     {LOCATION_NAV_CORRECTION_RTK_BIT, "NAV_CORR_RTK"},
-    {LOCATION_NAV_CORRECTION_PPP_BIT, "NAV_CORR_PPP"}
+    {LOCATION_NAV_CORRECTION_PPP_BIT, "NAV_CORR_PPP"},
+    {LOCATION_NAV_CORRECTION_RTK_FIXED_BIT, "NAV_CORR_RTK_FIXED"},
+    {LOCATION_NAV_CORRECTION_ONLY_SBAS_CORRECTED_SV_USED_BIT,
+            "NAV_CORR_ONLY_SBAS_CORRECTED_SV_USED"}
 };
 // GnssLocationPosTechMask
 DECLARE_TBL(GnssLocationPosTechMask) = {
