@@ -35,6 +35,7 @@
 #include <MsgTask.h>
 #include <loc_cfg.h>
 #include <LocIpc.h>
+#include <LocTimer.h>
 #ifdef POWERMANAGER_ENABLED
 #include <PowerEvtHandler.h>
 #endif
@@ -60,6 +61,7 @@ typedef struct {
     uint32_t gnssSessionTbfMs;
     uint32_t deleteAllBeforeAutoStart;
     uint32_t posEngineMask;
+    uint32_t positionMode;
 } configParamToRead;
 
 
@@ -73,6 +75,33 @@ typedef struct {
     std::string clientName;
     ELocMsgID   configMsgId;
 } ConfigReqClientData;
+
+// periodic timer to perform maintenance work, e.g.: resource cleanup
+// for location hal daemon
+typedef std::unordered_map<std::string, shared_ptr<LocIpcSender>> ClientNameIpcSenderMap;
+class MaintTimer : public LocTimer {
+public:
+    MaintTimer(LocationApiService* locationApiService) :
+            mLocationApiService(locationApiService),
+            mMsgTask(new MsgTask("LocHalDaemonMaintenanceMsgTask", false)) {
+        if (!mMsgTask) {
+            LOC_LOGe("failed to create msg task");
+        }
+    };
+
+    ~MaintTimer() {
+        if (mMsgTask) {
+            mMsgTask->destroy();
+        }
+    }
+
+public:
+    void timeOutCallback() override;
+
+private:
+    LocationApiService* mLocationApiService;
+    MsgTask*            mMsgTask;
+};
 
 class LocationApiService
 {
@@ -112,6 +141,9 @@ public:
 
     static std::mutex mMutex;
 
+    // Utility routine used by maintenance timer
+    void performMaintenance();
+
 private:
     // APIs can be invoked to process client's IPC messgage
     void newClient(LocAPIClientRegisterReqMsg*);
@@ -145,10 +177,6 @@ private:
         // in our usage, we only configure one setting at a time,
         // so we have only one sessionId
         return *sessioIds;
-    }
-
-    inline void gnssDeleteAidingData(GnssAidingData& data) {
-        mLocationControlApi->gnssDeleteAidingData(data);
     }
 
     // Location control API callback
@@ -227,8 +255,12 @@ private:
 
     // Configration
     const uint32_t mAutoStartGnss;
+    GnssSuplMode   mPositionMode;
 
     PowerStateType  mPowerState;
+
+    // maintenance timer
+    MaintTimer mMaintTimer;
 };
 
 #endif //LOCATIONAPISERVICE_H

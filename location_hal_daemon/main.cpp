@@ -43,8 +43,6 @@
 
 #define HAL_DAEMON_VERSION "1.1.0"
 
-typedef void (StartDgnssApiServiceApi)();
-
 // this function will block until the directory specified in
 // dirName has been created
 static inline void waitForDir(const char* dirName) {
@@ -75,11 +73,15 @@ int main(int argc, char *argv[])
         {"AUTO_START_GNSS", &configParamRead.autoStartGnss, NULL, 'n'},
         {"GNSS_SESSION_TBF_MS", &configParamRead.gnssSessionTbfMs, NULL, 'n'},
         {"DELETE_ALL_BEFORE_AUTO_START", &configParamRead.deleteAllBeforeAutoStart, NULL, 'n'},
-        {"DELETE_ALL_ON_ENGINE_MASK", &configParamRead.posEngineMask, NULL, 'n'}
+        {"DELETE_ALL_ON_ENGINE_MASK", &configParamRead.posEngineMask, NULL, 'n'},
+        {"POSITION_MODE", &configParamRead.positionMode, NULL, 'n'},
     };
 
     // read configuration file
     UTIL_READ_CONF(LOC_PATH_GPS_CONF, configTable);
+    if (configParamRead.positionMode != GNSS_SUPL_MODE_MSB) {
+        configParamRead.positionMode = GNSS_SUPL_MODE_STANDALONE;
+    }
 
     LOC_LOGi("location hal daemon - ver %s", HAL_DAEMON_VERSION);
     loc_boot_kpi_marker("L - Location Probe Start");
@@ -94,12 +96,7 @@ int main(int argc, char *argv[])
 #ifdef INIT_SYSTEM_SYSV
     // set supplementary groups for sysvinit
     // For systemd, common supplementary groups are set via service files
-    #ifdef POWERMANAGER_ENABLED
-        char groupNames[LOC_MAX_PARAM_NAME] = "gps diag powermgr locclient inet";
-    #else
-        char groupNames[LOC_MAX_PARAM_NAME] = "gps diag locclient inet";
-    #endif
-
+    char groupNames[LOC_MAX_PARAM_NAME] = "gps diag powermgr locclient inet vnw";
     gid_t groupIds[LOC_PROCESS_MAX_NUM_GROUPS] = {};
     char *splitGrpString[LOC_PROCESS_MAX_NUM_GROUPS];
     int numGrps = loc_util_split_string(groupNames, splitGrpString,
@@ -158,18 +155,6 @@ int main(int argc, char *argv[])
 
     // move to root dir
     chdir("/");
-
-    // start listening for dgnss client events
-    StartDgnssApiServiceApi* pStartDgnssApiService = nullptr;
-    void* libhandle = nullptr;
-    const char* libName = "libcdfw.so";
-
-    pStartDgnssApiService =
-            (StartDgnssApiServiceApi*)dlGetSymFromLib(libhandle, libName,
-                                                      "startDgnssApiService");
-    if(nullptr != pStartDgnssApiService){
-        pStartDgnssApiService();
-    }
 
     // start listening for client events - will not return
     if (!LocationApiService::getInstance(configParamRead)) {

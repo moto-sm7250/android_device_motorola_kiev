@@ -64,10 +64,82 @@ uint32_t GeofenceImpl::nextId() {
 /******************************************************************************
 Utilities
 ******************************************************************************/
+static GnssMeasurementsDataFlagsMask parseMeasurementsDataMask(
+    ::GnssMeasurementsDataFlagsMask in) {
+    uint32_t out = 0;
+    LOC_LOGd("Hal GnssMeasurementsDataFlagsMask =0x%x ", in);
+
+    if (::GNSS_MEASUREMENTS_DATA_SV_ID_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_SV_ID_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_SV_TYPE_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_SV_TYPE_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_STATE_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_STATE_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_RECEIVED_SV_TIME_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_RECEIVED_SV_TIME_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_RECEIVED_SV_TIME_UNCERTAINTY_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_RECEIVED_SV_TIME_UNCERTAINTY_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_CARRIER_TO_NOISE_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_CARRIER_TO_NOISE_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_PSEUDORANGE_RATE_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_PSEUDORANGE_RATE_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_PSEUDORANGE_RATE_UNCERTAINTY_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_PSEUDORANGE_RATE_UNCERTAINTY_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_ADR_STATE_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_ADR_STATE_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_ADR_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_ADR_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_ADR_UNCERTAINTY_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_ADR_UNCERTAINTY_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_CARRIER_FREQUENCY_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_CARRIER_FREQUENCY_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_CARRIER_CYCLES_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_CARRIER_CYCLES_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_CARRIER_PHASE_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_CARRIER_PHASE_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_CARRIER_PHASE_UNCERTAINTY_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_CARRIER_PHASE_UNCERTAINTY_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_MULTIPATH_INDICATOR_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_MULTIPATH_INDICATOR_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_SIGNAL_TO_NOISE_RATIO_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_SIGNAL_TO_NOISE_RATIO_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_AUTOMATIC_GAIN_CONTROL_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_AUTOMATIC_GAIN_CONTROL_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_FULL_ISB_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_FULL_ISB_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_FULL_ISB_UNCERTAINTY_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_FULL_ISB_UNCERTAINTY_BIT;
+    }
+    if (::GNSS_MEASUREMENTS_DATA_CYCLE_SLIP_COUNT_BIT & in) {
+        out |= GNSS_MEASUREMENTS_DATA_CYCLE_SLIP_COUNT_BIT;
+    }
+    LOC_LOGd("LCA GnssMeasurementsDataFlagsMask =0x%x ", out);
+    return static_cast<GnssMeasurementsDataFlagsMask>(out);
+}
+
 static LocationCapabilitiesMask parseCapabilitiesMask(::LocationCapabilitiesMask mask) {
     uint64_t capsMask = 0;
 
-    LOC_LOGd ("LocationCapabilitiesMask =0x%x ", mask);
+    LOC_LOGd("LocationCapabilitiesMask =0x%x ", mask);
 
     if (::LOCATION_CAPABILITIES_TIME_BASED_TRACKING_BIT & mask) {
         capsMask |= LOCATION_CAPS_TIME_BASED_TRACKING_BIT;
@@ -800,6 +872,7 @@ static GnssSv parseGnssSv(const ::GnssSv &halGnssSv) {
     gnssSv.cN0Dbhz = halGnssSv.cN0Dbhz;
     gnssSv.elevation = halGnssSv.elevation;
     gnssSv.azimuth = halGnssSv.azimuth;
+    gnssSv.basebandCarrierToNoiseDbHz = halGnssSv.basebandCarrierToNoiseDbHz;
 
     uint32_t gnssSvOptionsMask = 0;
     if (::GNSS_SV_OPTIONS_HAS_EPHEMER_BIT & halGnssSv.gnssSvOptionsMask) {
@@ -850,8 +923,8 @@ static GnssMeasurements parseGnssMeasurements(const ::GnssMeasurementsNotificati
     for (int meas = 0; meas < halGnssMeasurements.count; meas++) {
         GnssMeasurementsData measurement;
 
-        measurement.flags = (GnssMeasurementsDataFlagsMask)
-                halGnssMeasurements.measurements[meas].flags;
+        measurement.flags =
+                parseMeasurementsDataMask(halGnssMeasurements.measurements[meas].flags);
         measurement.svId = halGnssMeasurements.measurements[meas].svId;
         measurement.svType =
                 (location_client::GnssSvType)halGnssMeasurements.measurements[meas].svType;
@@ -883,6 +956,15 @@ static GnssMeasurements parseGnssMeasurements(const ::GnssMeasurementsNotificati
         measurement.signalToNoiseRatioDb =
                 halGnssMeasurements.measurements[meas].signalToNoiseRatioDb;
         measurement.agcLevelDb = halGnssMeasurements.measurements[meas].agcLevelDb;
+        measurement.basebandCarrierToNoiseDbHz =
+                halGnssMeasurements.measurements[meas].basebandCarrierToNoiseDbHz;
+        measurement.gnssSignalType =
+                parseGnssSignalType(halGnssMeasurements.measurements[meas].gnssSignalType);
+        measurement.interSignalBiasNs =
+                halGnssMeasurements.measurements[meas].fullInterSignalBiasNs;
+        measurement.interSignalBiasUncertaintyNs =
+                halGnssMeasurements.measurements[meas].fullInterSignalBiasUncertaintyNs;
+        measurement.cycleSlipCount = halGnssMeasurements.measurements[meas].cycleSlipCount;
 
         gnssMeasurements.measurements.push_back(measurement);
     }
@@ -1489,6 +1571,7 @@ uint32_t* LocationClientApiImpl::addGeofences(size_t count, GeofenceOption* opti
                 LocAPIAddGeofencesReqMsg *pMsg = reinterpret_cast<LocAPIAddGeofencesReqMsg*>(msg);
                 strlcpy(pMsg->mSocketName, mApiImpl->mSocketName, MAX_SOCKET_PATHNAME_LENGTH);
                 pMsg->msgId = E_LOCAPI_ADD_GEOFENCES_MSG_ID;
+                pMsg->msgVersion = LOCATION_REMOTE_API_MSG_VERSION;
                 pMsg->geofences.count = mGfCount;
                 for (int i=0; i<mGfCount; ++i) {
                     (*(pMsg->geofences.gfPayload + i)).gfClientId = mClientIds[i];
@@ -1669,25 +1752,6 @@ void LocationClientApiImpl::resumeGeofences(size_t count, uint32_t* ids) {
         uint32_t* mGfIds;
     };
     mMsgTask->sendMsg(new (nothrow) ResumeGeofencesReq(this, count, ids));
-}
-
-uint32_t LocationClientApiImpl::gnssDeleteAidingData(const GnssAidingData& data) {
-    struct DeleteAidingDataReq : public LocMsg {
-        DeleteAidingDataReq(const LocationClientApiImpl* apiImpl, const GnssAidingData& data) :
-                mApiImpl(apiImpl), mAidingData(data) {}
-        virtual ~DeleteAidingDataReq() {}
-        void proc() const {
-            LocAPIDeleteAidingDataReqMsg msg(mApiImpl->mSocketName,
-                                             const_cast<GnssAidingData&>(mAidingData));
-            bool rc = mApiImpl->sendMessage(reinterpret_cast<uint8_t*>(&msg),
-                                                 sizeof(msg));
-            LOC_LOGd(">>> DeleteAidingDataReq rc=%d", rc);
-        }
-        const LocationClientApiImpl* mApiImpl;
-        GnssAidingData mAidingData;
-    };
-    mMsgTask->sendMsg(new (nothrow) DeleteAidingDataReq(this, data));
-    return 0;
 }
 
 void LocationClientApiImpl::updateNetworkAvailability(bool available) {
@@ -2007,6 +2071,23 @@ void IpcListener::onReceive(const char* data, uint32_t length,
                     if (mApiImpl.mLocationCb) {
                         mApiImpl.mLocationCb(location);
                     }
+                    // copy location info over to gnsslocaiton so we can use existing routine
+                    // to log the packet
+                    GnssLocation gnssLocation = {};
+                    gnssLocation.flags              = location.flags;
+                    gnssLocation.timestamp          = location.timestamp;
+                    gnssLocation.latitude           = location.latitude;
+                    gnssLocation.longitude          = location.longitude;
+                    gnssLocation.altitude           = location.altitude;
+                    gnssLocation.speed              = location.speed;
+                    gnssLocation.bearing            = location.bearing;
+                    gnssLocation.horizontalAccuracy = location.horizontalAccuracy;
+                    gnssLocation.verticalAccuracy   = location.verticalAccuracy;
+                    gnssLocation.speedAccuracy      = location.speedAccuracy;
+                    gnssLocation.bearingAccuracy    = location.bearingAccuracy;
+                    gnssLocation.techMask           = location.techMask;
+
+                    mApiImpl.mLogger.log(gnssLocation);
                 }
                 break;
             }
@@ -2046,7 +2127,7 @@ void IpcListener::onReceive(const char* data, uint32_t length,
             case E_LOCAPI_GEOFENCE_BREACH_MSG_ID:
             {
                 LOC_LOGd("<<< message = geofence breach");
-                if (mApiImpl.mCallbacksMask & E_LOCAPI_GEOFENCE_BREACH_MSG_ID) {
+                if (mApiImpl.mCallbacksMask & E_LOC_CB_GEOFENCE_BREACH_BIT) {
                     const LocAPIGeofenceBreachIndMsg* pGfBreachIndMsg =
                         (LocAPIGeofenceBreachIndMsg*)(pMsg);
                     std::vector<Geofence> geofences;
