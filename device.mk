@@ -138,7 +138,6 @@ PRODUCT_PACKAGES += \
     libaudioroute \
     libhdmiedid \
     libhfp \
-    libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
     libsndmonitor \
