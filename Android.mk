@@ -25,7 +25,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),sofiar)
+ifeq ($(TARGET_DEVICE),racer)
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
 

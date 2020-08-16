@@ -1,8 +1,8 @@
 
-LOCAL_PATH := device/motorola/sofiar
+LOCAL_PATH := device/motorola/racer
 
 # define hardware platform
-PRODUCT_PLATFORM := trinket
+PRODUCT_PLATFORM := lito
 
 #TEST
 # A/B support
@@ -11,7 +11,6 @@ PRODUCT_PACKAGES += \
     update_engine \
     update_engine_sideload \
     update_verifier
-
 
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
@@ -26,8 +25,8 @@ PRODUCT_PACKAGES += \
     android.hardware.boot@1.0-impl-wrapper.recovery \
     android.hardware.boot@1.0-impl-wrapper \
     android.hardware.boot@1.0-impl-recovery \
-    bootctrl.trinket \
-    bootctrl.trinket.recovery \
+    bootctrl.lito \
+    bootctrl.lito.recovery \
 
 PRODUCT_HOST_PACKAGES += \
     libandroidicu
@@ -36,7 +35,3 @@ PRODUCT_HOST_PACKAGES += \
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH)
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/recovery.img-dtb:dtb.img
-
-#PRODUCT_COPY_FILES += $(call find-copy-subdir-files,*,$(LOCAL_PATH)/recovery/root,recovery/root)
