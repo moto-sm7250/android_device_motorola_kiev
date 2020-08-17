@@ -21,6 +21,9 @@ DEVICE_PATH := device/motorola/racer
 # Display
 TARGET_SCREEN_DENSITY := 420
 
+# FOD
+TARGET_SURFACEFLINGER_FOD_LIB := //$(DEVICE_PATH):libfod_extension.racer
+
 # Kernel
 TARGET_KERNEL_CONFIG := vendor/racer_defconfig
 
