@@ -57,6 +57,8 @@
 #define NMEA_MIN_THRESHOLD_MSEC (99)
 #define NMEA_MAX_THRESHOLD_MSEC (975)
 
+#define DGNSS_RANGE_UPDATE_TIME_10MIN_IN_MILLI  600000
+
 using namespace loc_core;
 
 /* Method to fetch status cb from loc_net_iface library */
@@ -68,6 +70,7 @@ static void agpsOpenResultCb (bool isSuccess, AGpsExtType agpsType, const char* 
 static void agpsCloseResultCb (bool isSuccess, AGpsExtType agpsType, void* userDataPtr);
 
 typedef const CdfwInterface* (*getCdfwInterface)();
+
 
 GnssAdapter::GnssAdapter() :
     LocAdapterBase(0,
@@ -120,7 +123,8 @@ GnssAdapter::GnssAdapter() :
     mIsAntennaInfoInterfaceOpened(false),
     mLastDeleteAidingDataTime(0),
     mDgnssState(0),
-    mSendNmeaConsent(false)
+    mSendNmeaConsent(false),
+    mDgnssLastNmeaBootTimeMilli(0)
 {
     LOC_LOGD("%s]: Constructor %p", __func__, this);
     mLocPositionMode.mode = LOC_POSITION_MODE_INVALID;
@@ -2752,7 +2756,7 @@ GnssAdapter::saveTrackingSession(LocationAPI* client, uint32_t sessionId,
         mTimeBasedTrackingSessions[key] = options;
     }
     reportPowerStateIfChanged();
-    checkStartDgnssNtrip();
+    checkUpdateDgnssNtrip(false);
 }
 
 void
@@ -3810,11 +3814,12 @@ GnssAdapter::reportPosition(const UlpLocation& ulpLocation,
         reportNmea(s.c_str(), s.length());
 
         /* DgnssNtrip */
-        if (0 == (mDgnssState & DGNSS_STATE_NO_NMEA_PENDING) &&
-                -1 != indexOfGGA) {
+        if (-1 != indexOfGGA && isDgnssNmeaRequired()) {
             mDgnssState |= DGNSS_STATE_NO_NMEA_PENDING;
             mStartDgnssNtripParams.nmea = std::move(nmeaArraystr[indexOfGGA]);
-            checkStartDgnssNtrip();
+            bool isLocationValid = (0 != ulpLocation.gpsLocation.latitude) ||
+                    (0 != ulpLocation.gpsLocation.longitude);
+            checkUpdateDgnssNtrip(isLocationValid);
         }
     }
 }
@@ -6278,6 +6283,8 @@ GnssAdapter::reportGnssAntennaInformation(const antennaInfoCb antennaInfoCallbac
         char pcOffsetStr[LOC_MAX_PARAM_STRING];
         uint32_t numberOfRows = 0;
         uint32_t numberOfColumns = 0;
+        uint32_t numberOfRowsSGC = 0;
+        uint32_t numberOfColumnsSGC = 0;
 
         gnssAntennaInfo.phaseCenterVariationCorrectionMillimeters.clear();
         gnssAntennaInfo.phaseCenterVariationCorrectionUncertaintyMillimeters.clear();
@@ -6291,6 +6298,10 @@ GnssAdapter::reportGnssAntennaInformation(const antennaInfoCb antennaInfoCallbac
         s3 += to_string(i);
         string s4 = "NUMBER_OF_COLUMNS_";
         s4 += to_string(i);
+        string s5 = "NUMBER_OF_ROWS_SGC_";
+        s5 += to_string(i);
+        string s6 = "NUMBER_OF_COLUMNS_SGC_";
+        s6 += to_string(i);
 
         gnssAntennaInfo.size = sizeof(gnssAntennaInfo);
         loc_param_s_type ant_cf_table[] =
@@ -6299,8 +6310,17 @@ GnssAdapter::reportGnssAntennaInformation(const antennaInfoCb antennaInfoCallbac
             { s2.c_str(), &pcOffsetStr, NULL, 's' },
             { s3.c_str(), &numberOfRows, NULL, 'n' },
             { s4.c_str(), &numberOfColumns, NULL, 'n' },
+            { s5.c_str(), &numberOfRowsSGC, NULL, 'n' },
+            { s6.c_str(), &numberOfColumnsSGC, NULL, 'n' },
         };
         UTIL_READ_CONF(LOC_PATH_ANT_CORR, ant_cf_table);
+
+        if (0 == numberOfRowsSGC) {
+            numberOfRowsSGC = numberOfRows;
+        }
+        if (0 == numberOfColumnsSGC) {
+            numberOfColumnsSGC = numberOfColumns;
+        }
 
         gnssAntennaInfo.carrierFrequencyMHz = carrierFrequencyMHz;
 
@@ -6319,24 +6339,16 @@ GnssAdapter::reportGnssAntennaInformation(const antennaInfoCb antennaInfoCallbac
         for (uint32_t j = 0; j < numberOfRows; j++) {
             char pcVarCorrStr[LOC_MAX_PARAM_STRING];
             char pcVarCorrUncStr[LOC_MAX_PARAM_STRING];
-            char sigGainCorrStr[LOC_MAX_PARAM_STRING];
-            char sigGainCorrUncStr[LOC_MAX_PARAM_STRING];
 
             string s1 = "PC_VARIATION_CORRECTION_" + to_string(i) + "_ROW_";
             s1 += to_string(j);
             string s2 = "PC_VARIATION_CORRECTION_UNC_" + to_string(i) + "_ROW_";
             s2 += to_string(j);
-            string s3 = "SIGNAL_GAIN_CORRECTION_" + to_string(i) + "_ROW_";
-            s3 += to_string(j);
-            string s4 = "SIGNAL_GAIN_CORRECTION_UNC_" + to_string(i) + "_ROW_";
-            s4 += to_string(j);
 
             loc_param_s_type ant_row_table[] =
             {
                 { s1.c_str(), &pcVarCorrStr, NULL, 's' },
                 { s2.c_str(), &pcVarCorrUncStr, NULL, 's' },
-                { s3.c_str(), &sigGainCorrStr, NULL, 's' },
-                { s4.c_str(), &sigGainCorrUncStr, NULL, 's' },
             };
             UTIL_READ_CONF(LOC_PATH_ANT_CORR, ant_row_table);
 
@@ -6344,6 +6356,23 @@ GnssAdapter::reportGnssAntennaInformation(const antennaInfoCb antennaInfoCallbac
                     parseDoublesString(pcVarCorrStr));
             gnssAntennaInfo.phaseCenterVariationCorrectionUncertaintyMillimeters.push_back(
                     parseDoublesString(pcVarCorrUncStr));
+        }
+        for (uint32_t j = 0; j < numberOfRowsSGC; j++) {
+            char sigGainCorrStr[LOC_MAX_PARAM_STRING];
+            char sigGainCorrUncStr[LOC_MAX_PARAM_STRING];
+
+            string s3 = "SIGNAL_GAIN_CORRECTION_" + to_string(i) + "_ROW_";
+            s3 += to_string(j);
+            string s4 = "SIGNAL_GAIN_CORRECTION_UNC_" + to_string(i) + "_ROW_";
+            s4 += to_string(j);
+
+            loc_param_s_type ant_row_table[] =
+            {
+                { s3.c_str(), &sigGainCorrStr, NULL, 's' },
+                { s4.c_str(), &sigGainCorrUncStr, NULL, 's' },
+            };
+            UTIL_READ_CONF(LOC_PATH_ANT_CORR, ant_row_table);
+
             gnssAntennaInfo.signalGainCorrectionDbi.push_back(
                     parseDoublesString(sigGainCorrStr));
             gnssAntennaInfo.signalGainCorrectionUncertaintyDbi.push_back(
@@ -6435,10 +6464,11 @@ void GnssAdapter::handleEnablePPENtrip(const GnssNtripConnectionParams& params) 
     mStartDgnssNtripParams.nmea.clear();
     if (mSendNmeaConsent && pNtripParams->requiresNmeaLocation) {
         mDgnssState &= ~DGNSS_STATE_NO_NMEA_PENDING;
+        mDgnssLastNmeaBootTimeMilli = 0;
         return;
     }
 
-    checkStartDgnssNtrip();
+    checkUpdateDgnssNtrip(false);
 }
 
 void GnssAdapter::disablePPENtripStreamCommand() {
@@ -6462,11 +6492,21 @@ void GnssAdapter::handleDisablePPENtrip() {
     stopDgnssNtrip();
 }
 
-void GnssAdapter::checkStartDgnssNtrip() {
-    if (mDgnssState == (DGNSS_STATE_ENABLE_NTRIP_COMMAND | DGNSS_STATE_NO_NMEA_PENDING) &&
-            isInSession()) {
-        mDgnssState |= DGNSS_STATE_NTRIP_SESSION_STARTED;
-        mXtraObserver.startDgnssSource(mStartDgnssNtripParams);
+void GnssAdapter::checkUpdateDgnssNtrip(bool isLocationValid) {
+    if (isInSession()) {
+        uint64_t curBootTime = getBootTimeMilliSec();
+        if (mDgnssState == (DGNSS_STATE_ENABLE_NTRIP_COMMAND | DGNSS_STATE_NO_NMEA_PENDING)) {
+            mDgnssState |= DGNSS_STATE_NTRIP_SESSION_STARTED;
+            mXtraObserver.startDgnssSource(mStartDgnssNtripParams);
+            if (isDgnssNmeaRequired()) {
+                mDgnssLastNmeaBootTimeMilli = curBootTime;
+            }
+        } else if ((mDgnssState & DGNSS_STATE_NTRIP_SESSION_STARTED) && isLocationValid &&
+            isDgnssNmeaRequired() &&
+            curBootTime - mDgnssLastNmeaBootTimeMilli > DGNSS_RANGE_UPDATE_TIME_10MIN_IN_MILLI ) {
+            mXtraObserver.updateNmeaToDgnssServer(mStartDgnssNtripParams.nmea);
+            mDgnssLastNmeaBootTimeMilli = curBootTime;
+        }
     }
 }
 
@@ -6485,7 +6525,7 @@ void GnssAdapter::reportGGAToNtrip(const char* nmea) {
 #define POS_OF_GGA (3)  //start position of "GGA"
 #define COMMAS_BEFORE_VALID (6) //"$GPGGA,,,,,,0,,,,,,,,*hh"
 
-    if (mDgnssState & DGNSS_STATE_NO_NMEA_PENDING) {
+    if (!isDgnssNmeaRequired()) {
         return;
     }
 
@@ -6519,10 +6559,9 @@ void GnssAdapter::reportGGAToNtrip(const char* nmea) {
         if (COMMAS_BEFORE_VALID == foundNth && GGAString.at(foundPos-1) != '0') {
             mDgnssState |= DGNSS_STATE_NO_NMEA_PENDING;
             mStartDgnssNtripParams.nmea = std::move(GGAString);
-            checkStartDgnssNtrip();
+            checkUpdateDgnssNtrip(true);
         }
     }
 
     return;
 }
-
