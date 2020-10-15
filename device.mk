@@ -72,6 +72,7 @@ PRODUCT_PACKAGES += \
     bootctrl.$(PRODUCT_PLATFORM) \
     bootctrl.$(PRODUCT_PLATFORM).recovery
 
+# Apex libraries
 PRODUCT_HOST_PACKAGES += \
     libandroidicu
 
