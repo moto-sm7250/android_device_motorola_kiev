@@ -163,6 +163,7 @@ TW_OVERRIDE_SYSTEM_PROPS := \
 # Additional binaries & libraries needed for recovery
 TARGET_RECOVERY_DEVICE_MODULES += \
     android.hidl.base@1.0 \
+    ashmemd \
     ashmemd_aidl_interface-cpp \
     libashmemd_client \
     libcap \
@@ -172,6 +173,9 @@ TARGET_RECOVERY_DEVICE_MODULES += \
     libpcrecpp \
     libprocinfo \
     libxml2
+
+TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += \
+    $(TARGET_OUT_EXECUTABLES)/ashmemd
 
 TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
     $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so \
