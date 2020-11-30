@@ -1,11 +1,11 @@
 #
-# Copyright 2017 The Android Open Source Project
+# Copyright 2019 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,16 +14,7 @@
 # limitations under the License.
 #
 
-# This contains the module build definitions for the hardware-specific
-# components for this device.
-#
-# As much as possible, those components should be built unconditionally,
-# with device-specific names to avoid collisions, to avoid device-specific
-# bitrot and build breakages. Building a component unconditionally does
-# *not* include it on all devices, so it is safe even with hardware-specific
-# components.
-
-LOCAL_PATH := device/motorola/racer
+DEVICE_PATH := device/motorola/racer
 
 # Architecture
 TARGET_ARCH := arm64
@@ -38,11 +29,6 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a73
 
-TARGET_KERNEL_ARCH := arm64
-
-ENABLE_CPUSETS := true
-ENABLE_SCHEDBOOST := true
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := lito
 TARGET_NO_BOOTLOADER := true
@@ -51,8 +37,25 @@ TARGET_USES_UEFI := true
 BUILD_BROKEN_DUP_RULES := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=1 earlycon=msm_geni_serial,0x4a90000 loop.max_part=7 cgroup.memory=nokmem,nosocket androidboot.usbcontroller=4e00000.dwc3 printk.devkmsg=on  firmware_class.path=/vendor/firmware_mnt/image
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := \
+    console=ttyMSM0,115200,n8 \
+    androidboot.hardware=qcom \
+    androidboot.console=ttyMSM0 \
+    androidboot.memcg=1 \
+    lpm_levels.sleep_disabled=1 \
+    video=vfb:640x400,bpp=32,memsize=3072000 \
+    msm_rtb.filter=0x237 \
+    service_locator.enable=1 \
+    swiotlb=1 \
+    earlycon=msm_geni_serial,0x4a90000 \
+    loop.max_part=7 \
+    cgroup.memory=nokmem,nosocket \
+    androidboot.usbcontroller=4e00000.dwc3 printk.devkmsg=on \
+    androidboot.boot_devices=soc/1d84000.ufshc \
+    firmware_class.path=/vendor/firmware_mnt/image \
+    androidboot.fastboot=1 \
+    androidboot.selinux=permissive
+
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_BOOT_HEADER_VERSION := 2
@@ -65,9 +68,9 @@ BOARD_DTB_OFFSET           := 0x01f00000
 TARGET_KERNEL_ADDITIONAL_FLAGS := \
     DTC=$(OUT_DIR)/../device/motorola/racer/dtc/dtc
 
-TARGET_PREBUILT_DTB := $(LOCAL_PATH)/prebuilt/dtb.img
-TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/Image.gz
-BOARD_PREBUILT_DTBOIMAGE := $(LOCAL_PATH)/prebuilt/dtbo.img
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
@@ -110,17 +113,18 @@ TARGET_USERIMAGES_USE_F2FS := true
 
 # Super
 BOARD_SUPER_PARTITION_SIZE := 8690597888
-BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 4341104640
-BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := \
+BOARD_SUPER_PARTITION_GROUPS := motorola_dynamic_partitions
+BOARD_MOTOROLA_DYNAMIC_PARTITIONS_SIZE := 4341104640
+BOARD_MOTOROLA_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     system \
-    product
+    product \
+    vendor
 
 TARGET_NO_KERNEL := false
 TARGET_NO_RECOVERY := false
 
 # Partitions (listed in the file) to be wiped under recovery.
-# TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery.fstab
+# TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 
 # Workaround for error copying vendor files to recovery ramdisk
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -141,21 +145,61 @@ AB_OTA_PARTITIONS += \
     boot \
     system \
     vendor \
+    product \
     vbmeta \
+    vbmeta_system \
     dtbo
 
 # tell update_engine to not change dynamic partition table during updates
-# needed since our qti_dynamic_partitions does not include
+# needed since our motorola_dynamic_partitions does not include
 # vendor and odm and we also dont want to AB update them
-TARGET_ENFORCE_AB_OTA_PARTITION_LIST := true
+# TARGET_ENFORCE_AB_OTA_PARTITION_LIST := true
+
+TARGET_RECOVERY_DEVICE_MODULES += \
+    android.hidl.base@1.0 \
+    libicuuc \
+    libion \
+    libprocinfo \
+    libxml2
+TW_RECOVERY_ADDITIONAL_RELINK_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libicuuc.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libprocinfo.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
+TW_SCREEN_BLANK_ON_BOOT := true
+TW_OVERRIDE_SYSTEM_PROPS := \
+    "ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
+
+# Additional binaries & libraries needed for recovery
+TARGET_RECOVERY_DEVICE_MODULES += \
+    android.hidl.base@1.0 \
+    ashmemd_aidl_interface-cpp \
+    libashmemd_client \
+    libcap \
+    libion \
+    libpcrecpp \
+    libxml2
+
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/android.hidl.base@1.0.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/ashmemd_aidl_interface-cpp.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libashmemd_client.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libcap.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libpcrecpp.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
 
 # Encryption
+PLATFORM_VERSION := 16.1.0
 PLATFORM_SECURITY_PATCH := 2099-12-31
-VENDOR_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH :=  2099-12-31
 TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
+BOARD_USES_QCOM_FBE_DECRYPTION := true
 
 # TWRP specific build flags
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 RECOVERY_SDCARD_ON_DATA := true
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
@@ -166,20 +210,17 @@ AB_OTA_UPDATER := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_MAX_BRIGHTNESS := 255
 TW_THEME := portrait_hdpi
-TARGET_RECOVERY_DEVICE_MODULES += android.hardware.boot@1.0
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TW_NO_SCREEN_BLANK := true
 TW_USE_TOOLBOX := true
-BOARD_PROVIDES_GPTUTILS := true
 BOARD_SUPPRESS_SECURE_ERASE := true
 TW_EXCLUDE_TWRPAPP := true
 TW_HAS_EDL_MODE := true
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
 TW_NO_USB_STORAGE := true
-PLATFORM_VERSION := 16.1.0
 TW_Y_OFFSET := 89
 TW_H_OFFSET := -89
 
-ALLOW_MISSING_DEPENDENCIES := true
+# Debug flags
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true

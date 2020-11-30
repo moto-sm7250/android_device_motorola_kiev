@@ -83,10 +83,10 @@ extern "C" {
             "abl", "bluetooth", "cmnlib64", "cmnlib", \
             "devcfg", "dsp", "dtbo", "fsg", "hyp", "keymaster", \
             "logo", "multiimgoem", "multiimgqti", "prov", \
-            "qupfw", "rpm", "storsec", "tz", "uefisecapp", \
+            "qupfw", "rpm", "storsec", "tz", "uefisecapp", "vbmeta", "vbmeta_system", \
             "xbl_config"
 
-#define AB_PTN_LIST PTN_SWAP_LIST, "boot", "modem", "recovery", "vbmeta"
+#define AB_PTN_LIST PTN_SWAP_LIST, "boot", "modem", "product", "recovery", "system", "vendor"
 #define BOOT_DEV_DIR    "/dev/block/bootdevice/by-name"
 
 /******************************************************************************
