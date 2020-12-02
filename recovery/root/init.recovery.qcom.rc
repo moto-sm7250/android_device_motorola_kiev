@@ -34,6 +34,9 @@ on fs
     setprop ro.board.platform lito
     start load_ts_firmware
 
+on property:ro.crypto.type=file
+    setprop ro.crypto.state encrypted
+
 service load_ts_firmware /system/bin/load_ts_firmware.sh
     oneshot
     disabled
