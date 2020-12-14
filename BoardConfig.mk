@@ -19,7 +19,7 @@
 DEVICE_PATH := device/motorola/racer
 
 # Display
-TARGET_SCREEN_DENSITY := 560
+TARGET_SCREEN_DENSITY := 420
 
 # Kernel
 TARGET_KERNEL_CONFIG := vendor/racer_defconfig
