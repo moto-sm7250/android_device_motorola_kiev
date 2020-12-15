@@ -17,6 +17,10 @@ function blob_fixup() {
         hexdump -ve '1/1 "%.2X"' "${2}" | sed "s/CC0A0094/1F2003D5/g" | xxd -r -p > "${EXTRACT_TMP_DIR}/${1##*/}"
         mv "${EXTRACT_TMP_DIR}/${1##*/}" "${2}"
         ;;
+    # __lttf2 shim
+    vendor/lib64/libvidhance.so)
+        "${PATCHELF}" --print-needed "${2}" |grep -q libcomparetf2_shim || "${PATCHELF}" --add-needed libcomparetf2_shim.so "${2}"
+        ;;
     esac
 }
 
