@@ -41,6 +41,7 @@ PRODUCT_PACKAGES += \
 
 # Init
 PRODUCT_PACKAGES += \
+    init.mmi.laser.sh \
     init.mmi.overlay.rc
 
 # NFC
