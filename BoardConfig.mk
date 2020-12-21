@@ -33,6 +33,3 @@ TARGET_MODULE_ALIASES += \
     snd-soc-madera.ko:cirrus_madera.ko \
     snd-soc-wm-adsp.ko:cirrus_wm_adsp.ko \
     irq-madera.ko:cirrus_irq-madera.ko
-
-# Properties
-TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
