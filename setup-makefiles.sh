@@ -22,6 +22,6 @@ export DEVICE=racer
 export DEVICE_COMMON=sm7250-common
 export VENDOR=motorola
 
-export DEVICE_BRINGUP_YEAR=2019
+export DEVICE_BRINGUP_YEAR=2020
 
 "./../../${VENDOR}/${DEVICE_COMMON}/setup-makefiles.sh" "$@"
