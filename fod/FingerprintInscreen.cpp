@@ -21,6 +21,11 @@
 #include <hidl/HidlTransportSupport.h>
 #include <fstream>
 #include <cmath>
+#include <thread>
+
+#include <fcntl.h>
+#include <poll.h>
+#include <sys/stat.h>
 
 #define NOTIFY_FINGER_DOWN 1536
 #define NOTIFY_FINGER_UP 1537
@@ -29,7 +34,7 @@
 #define FOD_SENSOR_Y 1920
 #define FOD_SENSOR_SIZE 182
 
-#define BRIGHTNESS_PATH "/sys/class/backlight/panel0-backlight/brightness"
+#define FOD_UI_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/fod_ui"
 
 namespace vendor {
 namespace lineage {
@@ -39,26 +44,52 @@ namespace inscreen {
 namespace V1_0 {
 namespace implementation {
 
-/*
- * Write value to path and close file.
- */
-template <typename T>
-static void set(const std::string& path, const T& value) {
-    std::ofstream file(path);
-    file << value;
-}
+static bool readBool(int fd) {
+    char c;
+    int rc;
 
-template <typename T>
-static T get(const std::string& path, const T& def) {
-    std::ifstream file(path);
-    T result;
+    rc = lseek(fd, 0, SEEK_SET);
+    if (rc) {
+        LOG(ERROR) << "failed to seek fd, err: " << rc;
+        return false;
+    }
 
-    file >> result;
-    return file.fail() ? def : result;
+    rc = read(fd, &c, sizeof(char));
+    if (rc != 1) {
+        LOG(ERROR) << "failed to read bool from fd, err: " << rc;
+        return false;
+    }
+
+    return c != '0';
 }
 
 FingerprintInscreen::FingerprintInscreen() {
     this->mGoodixFpDaemon = IGoodixFingerprintDaemon::getService();
+
+    std::thread([this]() {
+        int fd = open(FOD_UI_PATH, O_RDONLY);
+        if (fd < 0) {
+            LOG(ERROR) << "failed to open fd, err: " << fd;
+            return;
+        }
+
+        struct pollfd fodUiPoll = {
+            .fd = fd,
+            .events = POLLERR | POLLPRI,
+            .revents = 0,
+        };
+
+        while (true) {
+            int rc = poll(&fodUiPoll, 1, -1);
+            if (rc < 0) {
+                LOG(ERROR) << "failed to poll fd, err: " << rc;
+                continue;
+            }
+
+            this->mGoodixFpDaemon->sendCommand(readBool(fd) ? NOTIFY_FINGER_DOWN : NOTIFY_FINGER_UP, {},
+                [](int, const hidl_vec<signed char>&) {});
+        }
+    }).detach();
 }
 
 Return<int32_t> FingerprintInscreen::getPositionX() {
@@ -82,14 +113,10 @@ Return<void> FingerprintInscreen::onFinishEnroll() {
 }
 
 Return<void> FingerprintInscreen::onPress() {
-    this->mGoodixFpDaemon->sendCommand(NOTIFY_FINGER_DOWN, {},
-                [](int, const hidl_vec<signed char>&) {});
     return Void();
 }
 
 Return<void> FingerprintInscreen::onRelease() {
-    this->mGoodixFpDaemon->sendCommand(NOTIFY_FINGER_UP, {},
-                [](int, const hidl_vec<signed char>&) {});
     return Void();
 }
 

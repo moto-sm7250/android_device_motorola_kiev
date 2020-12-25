@@ -23,6 +23,7 @@ TARGET_SCREEN_DENSITY := 420
 
 # FOD
 TARGET_SURFACEFLINGER_FOD_LIB := //$(DEVICE_PATH):libfod_extension.racer
+TARGET_USES_FOD_ZPOS := true
 
 # Kernel
 TARGET_KERNEL_CONFIG := vendor/racer_defconfig
