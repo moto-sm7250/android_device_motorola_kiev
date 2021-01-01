@@ -32,15 +32,6 @@ on fs
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     export LD_LIBRARY_PATH /sbin:/vendor/lib64:/vendor/lib64/hw
     setprop ro.board.platform lito
-    start load_ts_firmware
 
 on property:ro.crypto.type=file
     setprop ro.crypto.state encrypted
-
-service load_ts_firmware /system/bin/load_ts_firmware.sh
-    oneshot
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
