@@ -42,15 +42,15 @@ BOARD_KERNEL_CMDLINE := \
     androidboot.hardware=qcom \
     androidboot.console=ttyMSM0 \
     androidboot.memcg=1 \
+    androidboot.usbcontroller=a600000.dwc3 \
     lpm_levels.sleep_disabled=1 \
     video=vfb:640x400,bpp=32,memsize=3072000 \
     msm_rtb.filter=0x237 \
     service_locator.enable=1 \
-    swiotlb=1 \
-    earlycon=msm_geni_serial,0x4a90000 \
+    swiotlb=2048 \
+    earlycon=msm_geni_serial,0x888000 \
     loop.max_part=7 \
     cgroup.memory=nokmem,nosocket \
-    androidboot.usbcontroller=4e00000.dwc3 printk.devkmsg=on \
     androidboot.boot_devices=soc/1d84000.ufshc \
     firmware_class.path=/vendor/firmware_mnt/image \
     androidboot.fastboot=1 \
