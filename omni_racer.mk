@@ -1,5 +1,5 @@
 #
-# Copyright 2019 The Android Open Source Project
+# Copyright 2021 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 # Release name
 PRODUCT_RELEASE_NAME := racer
-PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
 # Inherit from our custom product configuration
 $(call inherit-product, vendor/omni/config/common.mk)
-
 
 # Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := racer

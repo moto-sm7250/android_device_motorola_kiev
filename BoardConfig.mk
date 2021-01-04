@@ -1,5 +1,5 @@
 #
-# Copyright 2019 The Android Open Source Project
+# Copyright 2021 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -138,23 +138,6 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 
 # Use mke2fs to create ext4 images
 TARGET_USES_MKE2FS := true
-
-# A/B updater updatable partitions list. Keep in sync with the partition list
-# with "_a" and "_b" variants in the device. Note that the vendor can add more
-# more partitions to this list for the bootloader and radio.
-AB_OTA_PARTITIONS += \
-    boot \
-    system \
-    vendor \
-    product \
-    vbmeta \
-    vbmeta_system \
-    dtbo
-
-# tell update_engine to not change dynamic partition table during updates
-# needed since our motorola_dynamic_partitions does not include
-# vendor and odm and we also dont want to AB update them
-# TARGET_ENFORCE_AB_OTA_PARTITION_LIST := true
 
 TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.device=ro.product.system.device;ro.product.model=ro.product.system.model;ro.product.name=ro.product.system.name"
