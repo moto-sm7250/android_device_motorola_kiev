@@ -24,7 +24,7 @@ $(call inherit-product, vendor/omni/config/common.mk)
 PRODUCT_DEVICE := racer
 PRODUCT_NAME := omni_$(PRODUCT_DEVICE)
 PRODUCT_BRAND := motorola
-PRODUCT_MODEL := Moto Edge
+PRODUCT_MODEL := motorola edge
 PRODUCT_MANUFACTURER := motorola
 
 # Inherit from hardware-specific part of the product configuration
