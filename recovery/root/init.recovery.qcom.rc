@@ -35,3 +35,4 @@ on fs
 
 on property:ro.crypto.type=file
     setprop ro.crypto.state encrypted
+    setprop twrp.apex.loaded true
