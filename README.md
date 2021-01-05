@@ -26,10 +26,9 @@ See /prebuilt/README.md
 
 ```sh
 . build/envsetup.sh
-export ALLOW_MISSING_DEPENDENCIES=true
 export LC_ALL=C
 lunch omni_racer-eng
-mka adbd recoveryimage
+make -j4 recoveryimage
 ```
 
 ### Copyright
