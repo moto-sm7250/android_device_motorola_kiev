@@ -162,7 +162,8 @@ TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_MAX_BRIGHTNESS := 255
 TW_DEFAULT_BRIGHTNESS := 120
 TW_THEME := portrait_hdpi
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/config/usb_gadget/g1/functions/mass_storage.0/lun.%d/file"
+TW_CUSTOM_BATTERY_PATH := "/sys/class/power_supply/qcom_battery"
 TW_NO_SCREEN_BLANK := true
 
 TW_OVERRIDE_SYSTEM_PROPS := \
