@@ -37,6 +37,11 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.display.hdr.config=/vendor/etc/hdr_tm_config.xml
 
+# Keyboard
+PRODUCT_PRODUCT_PROPERTIES += \
+	ro.com.google.ime.kb_pad_port_l=10 \
+	ro.com.google.ime.kb_pad_port_r=10
+
 # Sensor
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.vendor.sensors.mot_ltv=true \
