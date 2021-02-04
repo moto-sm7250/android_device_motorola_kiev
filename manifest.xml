@@ -1,0 +1,11 @@
+<manifest version="1.0" type="device" target-level="4">
+    <hal format="hidl">
+        <name>com.motorola.hardware.biometric.fingerprint</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IMotoFingerPrint</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+</manifest>

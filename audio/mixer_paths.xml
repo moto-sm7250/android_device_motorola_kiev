@@ -536,7 +536,7 @@
 	</path>
 
 	<path name="low-latency-record">
-		<ctl name="MultiMedia5 Mixer SEN_MI2S_TX" value="1" />
+		<ctl name="MultiMedia8 Mixer SEN_MI2S_TX" value="1" />
 	</path>
 
 	<path name="low-latency-record bt-sco">
@@ -875,6 +875,31 @@
 		<ctl name="RCV AMP PCM Gain" value="17" />
 		<ctl name="RCV AMP Enable Switch" value="1" />
 	</path>
+	<path name="speaker-left">
+		<ctl name="AIF2TX1 Input 3" value="None" />
+		<ctl name="RCV GLOBAL_EN from GPIO" value="0" />
+		<!-- Set sample rate to 48kHz -->
+		<ctl name="AIF2 Capture-RCV AMP Playback" value="Anonymous Configuration 0" />
+		<ctl name="SEN_MI2S_RX Channels" value="One" />
+		<ctl name="RCV PCM Source" value="DSP" />
+		<ctl name="AIF2TX1 Input 1" value="AIF1RX1" />
+		<ctl name="AIF2TX1 Input 1 Volume" value="32" />
+		<ctl name="RCV AMP PCM Gain" value="17" />
+		<ctl name="RCV AMP Enable Switch" value="1" />
+	</path>
+
+	<path name="speaker-right">
+		<ctl name="AIF2TX1 Input 3" value="None" />
+		<ctl name="RCV GLOBAL_EN from GPIO" value="0" />
+		<!-- Set sample rate to 48kHz -->
+		<ctl name="AIF2 Capture-RCV AMP Playback" value="Anonymous Configuration 0" />
+		<ctl name="SEN_MI2S_RX Channels" value="One" />
+		<ctl name="SPK PCM Source" value="DSP" />
+		<ctl name="AIF2TX2 Input 1" value="AIF1RX2" />
+		<ctl name="AIF2TX2 Input 1 Volume" value="32" />
+		<ctl name="SPK AMP PCM Gain" value="18" />
+		<ctl name="SPK AMP Enable Switch" value="1" />
+	</path>
 
 	<path name="speaker-reverse">
 		<path name="speaker" />
@@ -901,15 +926,11 @@
 	</path>
 
 	<path name="handset-mic">
-		<path name="mic1" />
+		<path name="mic2" />
 		<ctl name="IN1L Volume" value="12" />
 	</path>
 
 	<path name="headphones">
-		<ctl name="AIF2TX1 Input 3" value="None" />
-		<ctl name="RCV GLOBAL_EN from GPIO" value="0" />
-		<!-- Set sample rate to 48kHz -->
-		<ctl name="AIF2 Capture-RCV AMP Playback" value="Anonymous Configuration 0" />
 		<ctl name="SEN_MI2S_RX Channels" value="Two" />
 		<ctl name="ISRC2INT1 Input 1" value="AIF1RX1" />
 		<ctl name="HPOUT1L Input 1" value="ISRC2INT1" />

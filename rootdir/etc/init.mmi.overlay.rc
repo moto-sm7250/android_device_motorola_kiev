@@ -11,7 +11,7 @@ on mmi-priority
    # to perform firmware update if necessary
    setprop vendor.mmi_init.stage priority
    exec_background u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules aw8695.ko
-   exec_background u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules sensors_class.ko sx933x_sar.ko touchscreen_mmi.ko
+   exec_background u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules sensors_class.ko sx933x_sar.ko mmi_relay.ko touchscreen_mmi.ko
 
 on fs
    # Majority of MMI DLKMs should be in this group
@@ -28,7 +28,9 @@ on post-fs
    wait_for_prop vendor.mmi_init.modules_loaded 1
    chown nfc nfc /dev/st21nfc
    chmod 0660 /dev/st21nfc
-   start stflashtool
+
+on property:ro.vendor.hw.nfc=true && property:persist.vendor.radio.multisim.config=*
+   start vendor.stflashtool
 
 on post-fs-data
    # Load DLKM that can afford being loaded later
@@ -63,6 +65,11 @@ on boot
    chmod 0660 /sys/class/touchscreen/primary/hold_distance
    chown system system /sys/class/touchscreen/primary/gs_distance
    chmod 0660 /sys/class/touchscreen/primary/gs_distance
+
+service vendor.mmi_modules /vendor/bin/init.mmi.modules.sh
+    user root
+    oneshot
+    disabled
 
 service capsense_reset /system/vendor/bin/capsense_reset
    class core
