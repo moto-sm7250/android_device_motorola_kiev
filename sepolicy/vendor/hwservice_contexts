@@ -10,3 +10,6 @@ vendor.fpsensor.hardware.fpsensorhidlsvc::IFpsensorHidlSvc                      
 # NFC
 vendor.nxp.nxpese::INxpEse                                                        u:object_r:nxpese_hwservice:s0
 vendor.nxp.nxpnfc::INxpNfc                                                        u:object_r:nxpnfc_hwservice:s0
+
+# Moto Health
+motorola.hardware.health::IMotHealth                                              u:object_r:hal_health_hwservice:s0
