@@ -24,10 +24,10 @@ fi
 set -e
 
 # Required!
-export DEVICE=racer
+export DEVICE=kiev
 export DEVICE_COMMON=sm7250-common
 export VENDOR=motorola
 
-export DEVICE_BRINGUP_YEAR=2020
+export DEVICE_BRINGUP_YEAR=2021
 
 "./../../${VENDOR}/${DEVICE_COMMON}/extract-files.sh" "$@"
