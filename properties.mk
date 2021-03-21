@@ -1,5 +1,5 @@
 #
-# Properties for Racer
+# Properties for Kiev
 #
 
 # Audio

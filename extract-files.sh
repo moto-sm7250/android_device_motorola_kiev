@@ -8,7 +8,7 @@
 
 set -e
 
-DEVICE=racer
+DEVICE=kiev
 VENDOR=motorola
 
 # Load extract_utils and do some sanity checks
