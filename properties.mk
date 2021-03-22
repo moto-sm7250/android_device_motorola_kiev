@@ -152,10 +152,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     drm.service.enabled=true
 
-# Fingerprint
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.hardware.fingerprint=goodix
-
 # Firmware
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.hw.modem_version=.
@@ -179,16 +175,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.sf.hw=0 \
     debug.sf.latch_unsignaled=1 \
     persist.demo.hdmirotationlock=false \
-    persist.sys.sf.brightness_threshold_refresh_rate=6 \
     persist.sys.sf.color_mode=0 \
     persist.sys.sf.color_saturation=1.0 \
-    persist.sys.sf.enable_refresh_rate_rectification=0 \
-    persist.sys.sf.forbidden_RRR_under_lowbrightness=1
     persist.sys.sf.force_brightness_capability=1 \
-    persist.sys.sf.fps_threshold_duration_ms=290 \
-    persist.sys.sf.fps_threshold_count=29 \
     persist.sys.sf.native_mode=1 \
-    persist.sys.sf.set_rectify_timer_ms=1000 \
     debug.sf.enable_gl_backpressure=1 \
     ro.opengles.version=196610 \
     ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.lito.api30 \
@@ -198,9 +188,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.surface_flinger.set_idle_timer_ms=4000 \
     ro.surface_flinger.set_touch_timer_ms=4000 \
-    ro.surface_flinger.set_display_power_timer_ms=1000 \
-    ro.surface_flinger.use_smart_90_for_video=true \
-    ro.surface_flinger.refresh_rate_switching=true \
+    ro.surface_flinger.set_display_power_timer_ms=1000
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.sf.blurs_are_expensive=1 \
@@ -219,11 +207,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Incremental FS
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.incremental.enable=1
-
-# Keyboard
-PRODUCT_PRODUCT_PROPERTIES += \
-	ro.com.google.ime.kb_pad_port_l=10 \
-	ro.com.google.ime.kb_pad_port_r=10
 
 # Keymaster 4.0 - TDES support
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -325,9 +308,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 
 # Sensor
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.vendor.sensors.mot_ltv=true \
-    persist.vendor.sensors.hal_trigger_ssr=true \
-    persist.vendor.sensors.odl.adsp=true
+    persist.vendor.sensors.enable.mag_filter=true
 
 # SurfaceFlinger
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -352,6 +333,12 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Sensor
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     persist.vendor.sensors.enable.mag_filter=true
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.sensors.hal_trigger_ssr=false \
+    persist.vendor.sensors.odl.adsp=true \
+    ro.vendor.sensors.glance_approach=false \
+    ro.vendor.sensors.mot_ltv=true
 
 # Time
 PRODUCT_PROPERTY_OVERRIDES += \
