@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2012, 2014-2020, The Linux Foundation. All rights reserved.
+# Copyright (c) 2009-2012, 2014-2021, The Linux Foundation. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -72,6 +72,7 @@ on init
     write /sys/fs/cgroup/memory/bg/memory.swappiness 140
     write /sys/fs/cgroup/memory/bg/memory.move_charge_at_immigrate 1
     chown root system /sys/fs/cgroup/memory/bg/tasks
+    write /sys/kernel/icnss/wpss_boot 1
     chmod 0660 /sys/fs/cgroup/memory/bg/tasks
 
 on post-fs
@@ -91,6 +92,16 @@ on early-boot
 
     chown system system /mnt/vendor/persist/data/pfm/licenses
     chmod 0775 /mnt/vendor/persist/data/pfm/licenses
+    chown system system /mnt/vendor/persist/data/pfm/licenses/store_0
+    chmod 0664 /mnt/vendor/persist/data/pfm/licenses/store_0
+    chown system system /mnt/vendor/persist/data/pfm/licenses/store_1
+    chmod 0664 /mnt/vendor/persist/data/pfm/licenses/store_1
+    chown system system /mnt/vendor/persist/data/pfm/licenses/store_2
+    chmod 0664 /mnt/vendor/persist/data/pfm/licenses/store_2
+    chown system system /mnt/vendor/persist/data/pfm/licenses/store_3
+    chmod 0664 /mnt/vendor/persist/data/pfm/licenses/store_3
+    chown system system /mnt/vendor/persist/data/pfm/licenses/store_4
+    chmod 0664 /mnt/vendor/persist/data/pfm/licenses/store_4
 
 on boot
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
@@ -223,8 +234,11 @@ on post-fs-data
     # Change lm related dirs
     mkdir /data/vendor/lm 0700 root root
 
+    # Create directory used by powermodule
+    mkdir /data/vendor/pwr 0700 root root
+
     # Create directory used by media clients
-    mkdir /data/vendor/media 0770 mediacodec media
+    mkdir /data/vendor/media 0775 mediacodec media
 
     # Create /data/vendor/tzstorage directory for SFS listener
     mkdir /data/vendor/tzstorage 0770 system system
@@ -297,6 +311,7 @@ on post-fs-data
     mkdir /dev/socket/location 0770 gps gps
     mkdir /dev/socket/location/mq 0770 gps gps
     mkdir /dev/socket/location/xtra 0770 gps gps
+    mkdir /dev/socket/location/dgnss 0770 gps gps
 
     #Create directories for wifihal services
     mkdir /dev/socket/wifihal 0770 wifi wifi
@@ -407,7 +422,8 @@ service vendor.ssr_setup /system/vendor/bin/ssr_setup
 service vendor.ss_ramdump /system/vendor/bin/subsystem_ramdump
     class main
     user system
-    group log sdcard_rw sdcard_r diag
+    group log sdcard_rw sdcard_r diag system
+    ioprio rt 4
     disabled
 
 on property:ro.vendor.iocgrp.config=1
@@ -458,7 +474,6 @@ on property:sys.boot_completed=1
     #Reset read ahead for dm-0 and dm-1 to 512kb
     write /sys/block/dm-0/queue/read_ahead_kb 512
     write /sys/block/dm-1/queue/read_ahead_kb 512
-    write /sys/block/dm-2/queue/read_ahead_kb 512
     #WDSP FW boot sysfs node used by STHAL
     chown media audio /sys/kernel/wdsp0/boot
     chown media audio /sys/kernel/wcd_cpe0/fw_name
@@ -478,6 +493,9 @@ on property:persist.debug.trace=1
 
 on property:vendor.media.target.version=*
     setprop vendor.sys.media.target.version ${vendor.media.target.version}
+
+on property:vendor.netflix.bsp_rev=*
+    setprop ro.netflix.bsp_rev ${vendor.netflix.bsp_rev}
 
 on property:vendor.media.target_variant=*
     setprop ro.media.xml_variant.codecs ${vendor.media.target_variant}
@@ -683,10 +701,6 @@ service hostapd_fst /vendor/bin/hw/hostapd -dd -g /data/vendor/wifi/hostapd/glob
     disabled
     oneshot
 
-on property:ro.data.large_tcp_window_size=true
-    # Adjust socket buffer to enlarge TCP receive window for high bandwidth (e.g. DO-RevB)
-    write /proc/sys/net/ipv4/tcp_adv_win_scale  2
-
 service battery_monitor /system/bin/battery_monitor
     user system
     group system
@@ -742,9 +756,9 @@ on property:persist.sys.qlogd=0
     stop qlogd
 
 service vm_bms /vendor/bin/vm_bms
+    class main
     user root
-    group root
-    disabled
+    group system wakelock
 
 service vendor.msm_irqbalance /vendor/bin/msm_irqbalance -f /system/vendor/etc/msm_irqbalance.conf
     class core
@@ -847,6 +861,23 @@ on property:vendor.opengles.version=*
 #Set gpu available frequencies property
 on property:vendor.gpu.available_frequencies=*
     setprop ro.vendor.gpu.available_frequencies ${vendor.gpu.available_frequencies}
+
+# huangzq2: GPU trubo
+on property:vendor.gpu.turbo_enabled=1
+    setprop vendor.thermal.mode perf
+    stop thermal-engine
+    start thermal-engine
+
+on property:vendor.gpu.turbo_enabled=0
+    setprop vendor.thermal.mode normal
+    stop thermal-engine
+    start thermal-engine
+
+on property:vendor.gpu.turbo_supported=1 && property:vendor.gpu.turbo_enabled=1
+    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 0
+
+on property:vendor.gpu.turbo_supported=1 && property:vendor.gpu.turbo_enabled=0
+    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 1
 
 service vendor.audio-hal /vendor/bin/hw/android.hardware.audio.service
     override
