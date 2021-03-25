@@ -1,6 +1,5 @@
 /*
-   Copyright (c) 2016, The CyanogenMod Project
-   Copyright (c) 2019, The LineageOS Project
+   Copyright (c) 2013, The Linux Foundation. All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions are
@@ -27,19 +26,21 @@
    OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 #include <cstdlib>
 #include <fstream>
 #include <string.h>
 #include <sys/sysinfo.h>
 #include <unistd.h>
+#include <vector>
 
-#include <android-base/properties.h>
 #define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
 #include <sys/_system_properties.h>
 
-#include "vendor_init.h"
+#include <android-base/properties.h>
+#include <android-base/logging.h>
+
 #include "property_service.h"
+#include "vendor_init.h"
 
 using android::base::GetProperty;
 using android::base::SetProperty;
@@ -50,6 +51,25 @@ char const *heapsize;
 char const *heapminfree;
 char const *heapmaxfree;
 char const *heaptargetutilization;
+
+std::vector<std::string> ro_props_default_source_order = {
+    "",
+    "odm.",
+    "product.",
+    "system.",
+    "vendor.",
+};
+
+void property_override_device(char const prop[], char const value[], bool add = true)
+{
+    prop_info *pi;
+
+    pi = (prop_info*) __system_property_find(prop);
+    if (pi)
+        __system_property_update(pi, value, strlen(value));
+    else if (add)
+        __system_property_add(prop, strlen(prop), value, strlen(value));
+}
 
 void check_device()
 {
@@ -86,12 +106,44 @@ void check_device()
 
 void vendor_load_properties()
 {
+    std::string bootsku;
+    std::string device;
     check_device();
 
+    //Dalvik
     SetProperty("dalvik.vm.heapstartsize", heapstartsize);
     SetProperty("dalvik.vm.heapgrowthlimit", heapgrowthlimit);
     SetProperty("dalvik.vm.heapsize", heapsize);
     SetProperty("dalvik.vm.heaptargetutilization", heaptargetutilization);
     SetProperty("dalvik.vm.heapminfree", heapminfree);
     SetProperty("dalvik.vm.heapmaxfree", heapmaxfree);
+
+    //SKU
+    const auto set_ro_build_prop = [](const std::string &source,
+            const std::string &prop, const std::string &value) {
+        auto prop_name = "ro." + source + "build." + prop;
+        property_override_device(prop_name.c_str(), value.c_str(), false);
+    };
+
+    const auto set_ro_product_prop = [](const std::string &source,
+            const std::string &prop, const std::string &value) {
+        auto prop_name = "ro.product." + source + prop;
+        property_override_device(prop_name.c_str(), value.c_str(), false);
+    };
+
+    bootsku = GetProperty("ro.boot.hardware.sku", "");
+    if (bootsku == "XT2113-2") {
+        /* Motorola One 5G Ace */
+        for (const auto &source : ro_props_default_source_order) {
+            set_ro_product_prop(source, "model", "motorola one 5G ace");
+        }
+    } else {
+        /* Moto G 5G (Unlocked) */
+        for (const auto &source : ro_props_default_source_order) {
+            set_ro_product_prop(source, "model", "moto g 5G");
+        }
+    }
+
+    device = GetProperty("ro.product.device", "");
+    LOG(ERROR) << "Found bootsku '" << bootsku.c_str() << "' setting build properties for '" << device.c_str() << "' device\n";
 }

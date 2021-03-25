@@ -179,8 +179,8 @@ DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 
 # Init
-TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_lito
-TARGET_RECOVERY_DEVICE_MODULES := libinit_lito
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_kiev
+TARGET_RECOVERY_DEVICE_MODULES := libinit_kiev
 
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
