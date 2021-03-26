@@ -11,11 +11,10 @@
 /(vendor|system/vendor)/super_modem  u:object_r:firmware_file:s0
 
 # HAL Services
-/(vendor|system/vendor)/bin/hw/android\.hardware\.power-service\.sm7250-libperfmgr     u:object_r:hal_power_default_exec:s0
-/(vendor|system/vendor)/bin/hw/motorola\.hardware\.audio\.adspd@1\.0-service           u:object_r:hal_audio_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.power-service\.sm7250-libperfmgr               u:object_r:hal_power_default_exec:s0
+/(vendor|system/vendor)/bin/hw/motorola\.hardware\.audio\.adspd@1\.0-service                     u:object_r:hal_audio_default_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.lineage\.livedisplay@2\.0-service-sysfs\.motorola_lito    u:object_r:hal_lineage_livedisplay_sysfs_exec:s0
-/(vendor|system/vendor)/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.1-goodixservice                   u:object_r:hal_fingerprint_default_exec:s0
-/(vendor|system/vendor)/bin/hw/vendor\.lineage\.biometrics\.fingerprint\.inscreen@1\.0-service\.racer          u:object_r:hal_lineage_fod_racer_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.1-service-ets       u:object_r:hal_fingerprint_default_exec:s0
 
 # Vendor init scripts
 /(vendor|system/vendor)/bin/init\.mmi\.(touch|laser|usb)\.sh               u:object_r:vendor_qti_init_shell_exec:s0
@@ -50,7 +49,6 @@
 /dev/mmi_sys_temp                                       u:object_r:thermal_device:s0
 
 # Fingerprint
-/dev/goodix_fp                  u:object_r:fingerprint_device:s0
-/data/vendor/goodix(/.*)?       u:object_r:fingerprint_vendor_data_file:s0
+/dev/fpsensor                   u:object_r:fingerprint_device:s0
 /data/vendor/fpc(/.*)?          u:object_r:fingerprint_vendor_data_file:s0
 /data/vendor/.fps(/.*)?         u:object_r:fingerprint_vendor_data_file:s0

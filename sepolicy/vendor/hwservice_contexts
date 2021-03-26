@@ -2,5 +2,5 @@
 motorola.hardware.audio.adspd::IADSP                                              u:object_r:hal_audio_hwservice:s0
 
 # Fingerprint
-vendor.goodix.hardware.biometrics.fingerprint::IGoodixFingerprintDaemon                  u:object_r:hal_fingerprint_hwservice:s0
 com.motorola.hardware.biometric.fingerprint::IMotoFingerPrint                            u:object_r:hal_fingerprint_hwservice:s0
+vendor.egistec.hardware.fingerprint::IBiometricsFingerprintEts                           u:object_r:hal_fingerprint_hwservice:s0
