@@ -226,6 +226,16 @@ TARGET_RIL_VARIANT := caf
 # Security patch level
 VENDOR_SECURITY_PATCH := 2020-10-01
 
+# ODM
+ODM_MANIFEST_SKUS := \
+    dn \
+    n \
+    np
+
+ODM_MANIFEST_DN_FILES := $(DEVICE_PATH)/odm/manifest_dn.xml
+ODM_MANIFEST_N_FILES := $(DEVICE_PATH)/odm/manifest_n.xml
+ODM_MANIFEST_NP_FILES := $(DEVICE_PATH)/odm/manifest_np.xml
+
 # SELinux
 include device/qcom/sepolicy_vndr/SEPolicy.mk
 BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
