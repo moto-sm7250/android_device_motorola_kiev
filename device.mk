@@ -58,6 +58,10 @@ PRODUCT_PACKAGES += \
     init.mmi.overlay.rc
 
 # NFC
+PRODUCT_PACKAGES += \
+    android.hardware.nfc@1.2-service \
+    android.hardware.secure_element@1.2-service
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/nfc/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf \
     $(LOCAL_PATH)/nfc/libnfc-nci-nq.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci-nq.conf \
