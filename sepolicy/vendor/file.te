@@ -20,3 +20,7 @@ type proc_sched_lib_mask_cpuinfo, proc_type, fs_type;
 
 # Motorola
 type proc_moto_boot, proc_type, fs_type;
+
+# Fingerprint
+type sysfs_ets, sysfs_type, fs_type;
+type sysfs_fingerprint, sysfs_type, fs_type;
