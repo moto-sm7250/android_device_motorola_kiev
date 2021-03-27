@@ -22,6 +22,7 @@
 
 # Vendor init scripts
 /(vendor|system/vendor)/bin/init\.mmi\.(touch|laser|usb)\.sh               u:object_r:vendor_qti_init_shell_exec:s0
+/(vendor|system/vendor)/bin/init\.mmi\.charge\.sh                          u:object_r:vendor_qti_init_shell_exec:s0
 /(vendor|system/vendor)/bin/init\.oem\.hw\.sh                              u:object_r:vendor_qti_init_shell_exec:s0
 /(vendor|system/vendor)/bin/init\.oem\.(fingerprint|fingerprint2)\.sh      u:object_r:vendor_init_fingerprint_exec:s0
 
