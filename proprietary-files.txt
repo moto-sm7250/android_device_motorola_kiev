@@ -100,6 +100,8 @@ vendor/etc/vhw.xml
 
 # Sensors
 vendor/bin/capsense_reset
+vendor/bin/sensors.qti
+vendor/bin/sscrpcd
 vendor/etc/sensors/config/bmp380.json
 vendor/etc/sensors/config/default_sensors.json
 vendor/etc/sensors/config/dynamic_sensors.json
@@ -129,6 +131,11 @@ vendor/etc/sensors/config/tmd2755_0.json
 vendor/etc/sensors/config/tmd2755_0_dvt1.json
 vendor/etc/sensors/hals.conf
 vendor/etc/sensors/sns_reg_config
+vendor/lib64/libadspd.so
+vendor/lib64/libsensorcal.so
+vendor/lib64/libsensorslog.so
+vendor/lib64/libssc.so
+vendor/lib64/libssc_default_listener.so
 vendor/lib64/sensors.dt.so
 vendor/lib64/sensors.rp.so
 vendor/lib64/sensors.ssc.so
