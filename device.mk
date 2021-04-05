@@ -217,6 +217,8 @@ PRODUCT_PACKAGES += \
     init.mmi.touch.sh \
     init.mmi.usb.rc \
     init.mmi.usb.sh \
+    init.oem.fingerprint.sh \
+    init.oem.fingerprint2.sh \
     init.oem.hw.sh \
     init.qcom.class_core.sh \
     init.qcom.coex.sh \
