@@ -1,4 +1,4 @@
-# TWRP Device configuration for Motorola Edge
+# Device configuration for Motorola Edge
 
 ## Device specifications
 
