@@ -39,6 +39,18 @@ on fs
 on property:ro.crypto.type=file
     setprop ro.crypto.state encrypted
     setprop twrp.apex.loaded true
+	start load_modules
+
+on property:sys.usb.config=mtp,adb
+	# run service again for focaltech fw
+    start load_modules
+
+service load_modules /system/bin/load_modules.sh
+    oneshot
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
 
 service fstab_fixup /system/bin/fstab_fixup.sh
     oneshot
