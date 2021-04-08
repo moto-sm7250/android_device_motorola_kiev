@@ -1,36 +1,45 @@
+GNSS_CFLAGS = [
+    "-Werror",
+    "-Wno-error=unused-parameter",
+    "-Wno-error=macro-redefined",
+    "-Wno-error=reorder",
+    "-Wno-error=missing-braces",
+    "-Wno-error=self-assign",
+    "-Wno-error=enum-conversion",
+    "-Wno-error=logical-op-parentheses",
+    "-Wno-error=null-arithmetic",
+    "-Wno-error=null-conversion",
+    "-Wno-error=parentheses-equality",
+    "-Wno-error=undefined-bool-conversion",
+    "-Wno-error=tautological-compare",
+    "-Wno-error=switch",
+    "-Wno-error=date-time",
+]
 
-cc_library_shared {
-
-    name: "liblocation_api",
-    vendor: true,
-
-    sanitize: GNSS_SANITIZE,
-
-    shared_libs: [
-        "libutils",
-        "libcutils",
-        "libgps.utils",
-        "libdl",
-        "liblog",
+/* Activate the following for regression testing */
+GNSS_SANITIZE = {
+/*  address: true,*/
+    cfi: true,
+    misc_undefined: [
+        "bounds",
+        "null",
+        "unreachable",
+        "integer",
     ],
-
-    srcs: [
-        "LocationAPI.cpp",
-        "LocationAPIClientBase.cpp",
-    ],
-
-    cflags: ["-fno-short-enums"] + GNSS_CFLAGS,
-
-    header_libs: [
-        "libloc_pla_headers",
-        "libgps.utils_headers",
-    ],
-
 }
 
-cc_library_headers {
-
-    name: "liblocation_api_headers",
-    export_include_dirs: ["."],
-    vendor: true,
+/* Activate the following for debug purposes only,
+   comment out for production */
+GNSS_SANITIZE_DIAG = {
+/*
+    diag: {
+        cfi: true,
+        misc_undefined: [
+            "bounds",
+            "null",
+            "unreachable",
+            "integer",
+        ],
+    },
+*/
 }
