@@ -16,6 +16,9 @@
 
 BUILD_BROKEN_DUP_RULES := true
 
+# inherit from the proprietary version
+include vendor/motorola/kiev/BoardConfigVendor.mk
+
 BOARD_VENDOR := motorola
 
 DEVICE_PATH := device/motorola/kiev
