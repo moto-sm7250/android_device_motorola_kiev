@@ -217,8 +217,8 @@ TW_EXTRA_LANGUAGES := true
 # TW_DEFAULT_LANGUAGE := zh_CN
 
 # Notch Offset
-TW_Y_OFFSET := 89
-TW_H_OFFSET := -89
+TW_Y_OFFSET := 100
+TW_H_OFFSET := -100
 
 # Debug flags
 TWRP_INCLUDE_LOGCAT := true
