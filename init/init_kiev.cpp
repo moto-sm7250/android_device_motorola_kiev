@@ -57,6 +57,7 @@ std::vector<std::string> ro_props_default_source_order = {
     "odm.",
     "product.",
     "system.",
+    "system_ext.",
     "vendor.",
 };
 
@@ -119,9 +120,9 @@ void vendor_load_properties()
     SetProperty("dalvik.vm.heapmaxfree", heapmaxfree);
 
     //SKU
-    const auto set_ro_build_prop = [](const std::string &source,
+    const auto set_ro_boot_prop = [](const std::string &source,
             const std::string &prop, const std::string &value) {
-        auto prop_name = "ro." + source + "build." + prop;
+        auto prop_name = "ro.boot." + source + prop;
         property_override_device(prop_name.c_str(), value.c_str(), false);
     };
 
@@ -135,12 +136,22 @@ void vendor_load_properties()
     if (bootsku == "XT2113-2") {
         /* Motorola One 5G Ace */
         for (const auto &source : ro_props_default_source_order) {
+            set_ro_boot_prop(source,    "product.hardware.sku", "np");
+            set_ro_product_prop(source, "device", "kiev");
             set_ro_product_prop(source, "model", "motorola one 5G ace");
         }
-    } else {
+    } else if (bootsku == "XT2113-3") {
         /* Moto G 5G (Unlocked) */
         for (const auto &source : ro_props_default_source_order) {
-            set_ro_product_prop(source, "model", "moto g 5G");
+            set_ro_boot_prop(source,    "product.hardware.sku", "dn");
+            set_ro_product_prop(source, "device", "kiev");
+        }
+    } else if (bootsku == "XT2113-5") {
+        /* Motorola One 5G Ace (AT&T) */
+        for (const auto &source : ro_props_default_source_order) {
+            set_ro_boot_prop(source,    "product.hardware.sku", "n");
+            set_ro_product_prop(source, "device", "kiev");
+            set_ro_product_prop(source, "model", "motorola one 5G ace");
         }
     }
 
