@@ -39,10 +39,15 @@ on fs
 on property:ro.crypto.type=file
     setprop ro.crypto.state encrypted
     setprop twrp.apex.loaded true
+
+# Here run load_modules x3 to load troublesome focaltech ts
+on property:twrp.apex.loaded=true
 	start load_modules
 
+on firmware_mounts_complete
+    start load_modules
+
 on property:sys.usb.config=mtp,adb
-	# run service again for focaltech fw
     start load_modules
 
 service load_modules /system/bin/load_modules.sh

@@ -2,9 +2,6 @@
 
 module_path=/vendor/lib/modules
 firmware_path=/vendor/firmware
-mnt_mod_path=/v/lib/modules
-mnt_fw_path=/v/firmware
-
 touch_class_path=/sys/class/touchscreen
 touch_path=
 firmware_file=
@@ -32,42 +29,6 @@ wait_for_poweron()
 		return 1
 	fi
 	return 0
-}
-
-copy_files()
-{
-mkdir /v
-suffix=$(getprop ro.boot.slot_suffix)
-if [ -z "$suffix" ]; then
-            suf=$(getprop ro.boot.slot_suffix)
-            suffix="_$suf"
-        fi
-venpath="/dev/block/mapper/vendor$suffix"
-mount -t ext4 -o ro "$venpath" /v
-mkdir -p /vendor/lib/modules
-mkdir -p /vendor/firmware
-
-cp $mnt_fw_path/focaltech-csot-ft8756-05-0000-kiev.bin $firmware_path/focaltech-csot-ft8756-05-0000-kiev.bin
-cp $mnt_fw_path/focaltech-tm-ft8756-07-0000-kiev.bin $firmware_path/focaltech-tm-ft8756-07-0000-kiev.bin
-cp $mnt_mod_path/utags.ko $module_path/utags.ko
-cp $mnt_mod_path/mmi_annotate.ko $module_path/mmi_annotate.ko
-cp $mnt_mod_path/mmi_info.ko $module_path/mmi_info.ko
-cp $mnt_mod_path/tzlog_dump.ko $module_path/tzlog_dump.ko
-cp $mnt_mod_path/mmi_sys_temp.ko $module_path/mmi_sys_temp.ko
-cp $mnt_mod_path/qpnp-power-on-mmi.ko $module_path/qpnp-power-on-mmi.ko
-cp $mnt_mod_path/wl2864c.ko $module_path/wl2864c.ko 
-cp $mnt_mod_path/qpnp-smbcharger-mmi.ko $module_path/qpnp-smbcharger-mmi.ko
-cp $mnt_mod_path/mcDrvModule.ko $module_path/mcDrvModule.ko
-cp $mnt_mod_path/exfat.ko $module_path/exfat.ko
-cp $mnt_mod_path/aw8624.ko $module_path/aw8624.ko
-cp $mnt_mod_path/sensors_class.ko $module_path/sensors_class.ko
-cp $mnt_mod_path/sx933x_sar.ko $module_path/sx933x_sar.ko
-cp $mnt_mod_path/touchscreen_mmi.ko $module_path/touchscreen_mmi.ko
-cp $mnt_mod_path/focaltech_0flash_mmi.ko $module_path/focaltech_0flash_mmi.ko
-cp $mnt_mod_path/mmi_sigprint.ko $module_path/mmi_sigprint.ko
-
-umount /v
-rmdir /v
 }
 
 load_modules()
@@ -119,8 +80,6 @@ load_touch()
 	echo 1 > $touch_path/reset
 }
 
-copy_files
-wait
 load_modules
 wait
 load_touch
