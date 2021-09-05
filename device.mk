@@ -60,12 +60,7 @@ TARGET_ENFORCE_AB_OTA_PARTITION_LIST := true
 
 # Boot control HAL
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service \
-    android.hardware.boot@1.0-impl-wrapper.recovery \
-    android.hardware.boot@1.0-impl-wrapper \
-    android.hardware.boot@1.0-impl.recovery \
-    bootctrl.$(PRODUCT_PLATFORM) \
+    android.hardware.boot@1.1-impl-qti.recovery \
     bootctrl.$(PRODUCT_PLATFORM).recovery
 
 # Apex libraries

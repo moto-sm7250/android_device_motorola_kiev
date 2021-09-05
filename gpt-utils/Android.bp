@@ -16,7 +16,7 @@
 
 
 cc_library {
-    name: "libgptutils.kiev",
+    name: "libgptutils.motorola_lito",
     vendor: true,
     recovery_available: true,
     shared_libs: [
