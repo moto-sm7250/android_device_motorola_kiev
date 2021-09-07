@@ -2,6 +2,10 @@
 # Properties for Kiev
 #
 
+# ADB - Early
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.boot.adb_early=1
+
 # Audio - ACDB
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.audio.calfile0=/vendor/etc/acdbdata/Bluetooth_cal.acdb \
