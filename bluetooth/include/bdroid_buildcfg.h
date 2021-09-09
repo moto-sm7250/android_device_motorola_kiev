@@ -35,11 +35,14 @@ int property_get(const char *key, char *value, const char *default_value);
 
 static inline const char* BtmGetDefaultName()
 {
-    char product_device[92];
-    property_get("ro.product.device", product_device, "");
 
-    if (strstr(product_device, "racer"))
-        return "Motorola Edge";
+    char product_model[92];
+    property_get("ro.product.model", product_model, "");
+
+    if (strstr(product_model, "motorola one 5G ace"))
+        return "Motorola One 5G Ace";
+    if (strstr(product_model, "moto g 5G"))
+        return "Moto G 5G";
 
     // Fallback to Moto Generic
     return "Motorola";
