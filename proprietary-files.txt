@@ -395,7 +395,7 @@ vendor/lib64/libcvp_common.so
 vendor/lib64/vendor.qti.hardware.cvp@1.0.so
 
 # Charger
-vendor/bin/charge_only_mode
+vendor/bin/charge_only_mode|8f3e44866dd39801bb0f47ee8359a6e4a99a47be
 vendor/bin/hvdcp_opti
 vendor/bin/init.qti.chg_policy.sh
 vendor/etc/charger_fstab.qti
