@@ -213,7 +213,6 @@ USE_RECOVERY_INSTALLER := true
 RECOVERY_INSTALLER_PATH := bootable/recovery/installer
 
 BOARD_SUPPRESS_SECURE_ERASE := true
-TW_USE_TOOLBOX := true
 TW_HAS_EDL_MODE := true
 
 # Asian region languages
