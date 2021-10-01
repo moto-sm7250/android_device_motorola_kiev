@@ -33,3 +33,8 @@
 system           ext4       /system                                               display="System"
 vendor           ext4       /vendor                                               display="Vendor"
 product          ext4       /product                                              display="Product"
+
+# Flashable logical partitions
+/system_image    emmc       /dev/block/bootdevice/by-name/system                  flags=backup=1;display="System Image";flashimg=1
+/vendor_image    emmc       /dev/block/bootdevice/by-name/vendor                  flags=backup=1;display="Vendor Image";flashimg=1
+/product_image   emmc       /dev/block/bootdevice/by-name/product                 flags=backup=1;display="Product Image";flashimg=1
