@@ -154,6 +154,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.crypto.volume.metadata.method=dm-default-key \
     ro.crypto.volume.options=::v2
 
+# Cutout
+PRODUCT_PRODUCT_PROPERTIES += \
+    ro.support_hide_display_cutout=true
+
 # Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.dex2oat64.enabled=true \
