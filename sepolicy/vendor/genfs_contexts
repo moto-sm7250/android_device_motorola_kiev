@@ -17,7 +17,7 @@ genfscon proc /sys/kernel/sched_lib_name                                        
 genfscon proc /sys/kernel/sched_lib_mask_force                                  u:object_r:proc_sched_lib_mask_cpuinfo:s0
 
 # Graphics
-genfscon sysfs /devices/platform/soc/soc:qcom,dsi-display-primary               u:object_r:sysfs_graphics:s0
+genfscon sysfs /devices/platform/soc/soc:qcom,dsi-display-primary               u:object_r:vendor_sysfs_graphics:s0
 
 # Lights
 genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-05/c440000.qcom,spmi:qcom,pm6150l@5:qcom,leds@d000/leds/charging               u:object_r:sysfs_leds:s0
@@ -31,7 +31,8 @@ genfscon sysfs /devices/platform/soc/soc:qcom,dsi-display-primary/dsi_display_hb
 genfscon sysfs /devices/platform/soc/98c000.i2c/i2c-2/2-005a/leds/vibrator      u:object_r:sysfs_vibrator:s0
 
 # Health
-genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm7250b@2:qcom,qpnp-smb5/power_supply         u:object_r:vendor_sysfs_battery_supply:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm7250b@2:qcom,qpnp-smb5-mmi/power_supply u:object_r:vendor_sysfs_battery_supply:s0
+genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm7250b@2:qcom,qpnp-smb5/power_supply     u:object_r:vendor_sysfs_battery_supply:s0
 
 genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm7250b@2:qcom,qpnp-smb5-mmi/power_supply/mmi_battery   u:object_r:vendor_sysfs_battery_supply:s0
 genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm7250b@2:qcom,qpnp-smb5-mmi/force_hvdcp_power_max      u:object_r:vendor_sysfs_battery_supply:s0
