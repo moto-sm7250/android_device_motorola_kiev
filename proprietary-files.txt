@@ -1,5 +1,15 @@
 # All unpinned blobs below are extracted from Racer QPD30.114-80
 
+# ACDB
+vendor/etc/acdbdata/adsp_avs_config.acdb
+vendor/etc/acdbdata/Bluetooth_cal.acdb
+vendor/etc/acdbdata/General_cal.acdb
+vendor/etc/acdbdata/Global_cal.acdb
+vendor/etc/acdbdata/Handset_cal.acdb
+vendor/etc/acdbdata/Hdmi_cal.acdb
+vendor/etc/acdbdata/Headset_cal.acdb
+vendor/etc/acdbdata/Speaker_cal.acdb
+
 # ADSP
 vendor/bin/adsprpcd
 vendor/etc/init/vendor.qti.adsprpc-service.rc
@@ -76,6 +86,21 @@ vendor/lib64/libqtigef.so
 vendor/lib64/vendor.qti.hardware.bluetooth_sar@1.0.so
 vendor/lib64/vendor.qti.hardware.bluetooth_sar@1.1.so
 
+# Audio amplifier firmware
+vendor/firmware/cs35l41-dsp1-rcv-cali.bin
+vendor/firmware/cs35l41-dsp1-rcv-prot.bin
+vendor/firmware/cs35l41-dsp1-spk-cali.bin
+vendor/firmware/cs35l41-dsp1-spk-diag.wmfw
+vendor/firmware/cs35l41-dsp1-spk-prot.bin
+vendor/firmware/cs35l41-dsp1-spk-prot.wmfw
+vendor/firmware/fast_switch1.txt
+vendor/firmware/fast_switch2.txt
+vendor/firmware/marley-dsp1-ultrasound.bin
+vendor/firmware/marley-dsp1-ultrasound.wmfw
+vendor/firmware/marley-dsp2-aov-frontend.wmfw
+vendor/firmware/marley-dsp2-aov-vrgain.bin
+vendor/firmware/marley-dsp3-aov-control.wmfw
+
 # Bluetooth
 vendor/bin/hw/android.hardware.bluetooth@1.0-service-qti
 vendor/etc/init/android.hardware.bluetooth@1.0-service-qti.rc
@@ -96,6 +121,12 @@ lib64/libaptX_encoder.so
 lib64/libaptXHD_encoder.so
 
 # Camera
+vendor/etc/camera/aec_golden_tele.bin
+vendor/etc/camera/aec_golden_wide.bin
+vendor/etc/camera/arcsoft_calibration_u_dc.bin
+vendor/etc/camera/dual_golden_tele.bin
+vendor/etc/camera/dual_golden_wide.bin
+vendor/etc/camera/vidhance_calibration
 vendor/lib/libcamera_nn_stub.so
 vendor/lib/libcamerapostproc.so
 vendor/lib/libcamxexternalformatutils.so
@@ -110,6 +141,8 @@ vendor/lib/libcamxswprocessalgo.so
 vendor/lib/libcamxtintlessalgo.so
 vendor/lib64/hw/camera.qcom.so
 vendor/lib64/hw/com.qti.chi.override.so
+vendor/lib64/camera/components/com.arcsoft.node.dc_capture.so
+vendor/lib64/camera/components/com.arcsoft.node.smooth_transition.so
 vendor/lib64/camera/components/com.qti.camx.chiiqutils.so
 vendor/lib64/camera/components/com.qti.eisv2.so
 vendor/lib64/camera/components/com.qti.eisv3.so
@@ -147,6 +180,23 @@ vendor/lib64/camera/components/com.qti.stats.pdlibwrapper.so
 vendor/lib64/camera/components/com.qti.stats.tracker.so
 vendor/lib64/camera/components/com.vidhance.node.processing.so
 vendor/lib64/camera/components/com.vidhance.stats.aec_dmbr.so
+vendor/lib64/camera/com.mot.eeprom.mot_dw9763_ov8856_eeprom.so
+vendor/lib64/camera/com.mot.eeprom.mot_dw9767_ov16a10_eeprom.so
+vendor/lib64/camera/com.mot.eeprom.mot_gt9767_s5kgw1_eeprom.so
+vendor/lib64/camera/com.mot.eeprom.mot_s5k2x5sp_eeprom.so
+vendor/lib64/camera/com.qti.sensormodule.ofilm_mot_ov16a10.bin
+vendor/lib64/camera/com.qti.sensormodule.ofilm_mot_ov8856.bin
+vendor/lib64/camera/com.qti.sensormodule.ofilm_mot_s5k2x5sp.bin
+vendor/lib64/camera/com.qti.sensormodule.ofilm_mot_s5kgw1.bin
+vendor/lib64/camera/com.qti.sensor.mot_ov16a10.so
+vendor/lib64/camera/com.qti.sensor.mot_ov8856.so
+vendor/lib64/camera/com.qti.sensor.mot_s5k2x5sp.so
+vendor/lib64/camera/com.qti.sensor.mot_s5kgw1.so
+vendor/lib64/camera/com.qti.tuned.mot_ov16a10.bin
+vendor/lib64/camera/com.qti.tuned.mot_ov8856.bin
+vendor/lib64/camera/com.qti.tuned.mot_s5k2x5.bin
+vendor/lib64/camera/com.qti.tuned.mot_s5kgw1.bin
+vendor/lib64/libarcsoft_portrait_distortion_correction.so
 vendor/lib64/camera/com.qti.tuned.default.bin
 vendor/lib64/camera/fdconfigpreview.bin
 vendor/lib64/camera/fdconfigpreviewlite.bin
@@ -189,6 +239,7 @@ vendor/lib64/libmmcamera_faceproc2.so
 vendor/lib64/libmot_afd.so
 vendor/lib64/libmot_flash_aw3643.so
 vendor/lib64/libmot_lux_standardization.so
+vendor/lib64/libmpbase.so
 vendor/lib64/libofflinelog.so
 vendor/lib64/libsnsapi.so
 vendor/lib64/libsns_device_mode_stub.so
@@ -199,11 +250,19 @@ vendor/lib64/libsns_registry_skel.so
 vendor/lib64/libswregistrationalgo.so
 vendor/lib64/libswvdec.so
 vendor/lib64/libthirdparty_zoomtranslator_imp.so
+vendor/lib64/libtriplecam_image_optical_zoom.so
+vendor/lib64/libtriplecam_optical_zoom_control.so
+vendor/lib64/libtriplecam_video_optical_zoom.so
 vendor/lib64/libvidhance.so
 vendor/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.so
 
 # Camera (Firmware)
 vendor/firmware/CAMERA_ICP.elf
+
+# Camera (VL53l1)
+vendor/bin/vl53l1_daemon
+vendor/lib64/libvl53l1_daemon.so
+vendor/lib64/sensors.tof.vl53l1.so
 
 # CDSP
 vendor/bin/cdsprpcd
@@ -291,6 +350,7 @@ vendor/lib64/libcvp_common.so
 vendor/lib64/vendor.qti.hardware.cvp@1.0.so
 
 # Charger
+vendor/bin/charge_only_mode
 vendor/bin/hvdcp_opti
 vendor/bin/init.qti.chg_policy.sh
 vendor/etc/charger_fstab.qti
@@ -325,7 +385,15 @@ vendor/lib64/unnhal-acc-common.so
 vendor/lib64/unnhal-acc-hta.so
 vendor/lib64/unnhal-acc-hvx.so
 
-# Display postprocessing
+# Display (Calibration Data)
+vendor/etc/qdcm_calib_data_mipi_mot_cmd_boe_1080p_667.xml
+vendor/etc/qdcm_calib_data_mipi_mot_cmd_csot_1080p_667.xml
+vendor/etc/qdcm_calib_data_mipi_mot_cmd_tianma_1080p_667.xml
+
+# Display (HDR)
+vendor/etc/hdr_tm_config.xml
+
+# Display (Postprocessing)
 system_ext/lib64/vendor.display.color@1.0.so
 system_ext/lib64/vendor.display.color@1.1.so
 system_ext/lib64/vendor.display.color@1.2.so
@@ -407,6 +475,24 @@ vendor/lib64/libtrustedapploader.so
 vendor/lib64/libtzdrmgenprov.so
 vendor/lib64/libwvhidl.so
 vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
+
+# Fingerprint
+vendor/bin/hw/android.hardware.biometrics.fingerprint@2.1-goodixservice
+vendor/etc/init/android.hardware.biometrics.fingerprint@2.1-goodixservice.rc
+-vendor/etc/vintf/manifest/vendor.goodix.hardware.biometrics.fingerprint@2.1-service.xml
+vendor/lib64/hw/fingerprint.goodix.so
+vendor/lib64/com.motorola.hardware.biometric.fingerprint@1.0.so
+vendor/lib64/libgf_hal.so
+vendor/lib64/vendor.goodix.hardware.biometrics.fingerprint@2.1_vendor.so
+
+# Fingerprint (Firmware)
+vendor/firmware/goodix_cfg_group2.bin
+vendor/firmware/goodix_cfg_group2_parker.bin
+vendor/firmware/goodix_cfg_group_boe_racerl.bin
+vendor/firmware/goodix-gtx5-38-04-foles.bin
+vendor/firmware/goodix-gtx5-40-04-parker.bin
+vendor/firmware/goodix-gtx8-01-14-racerl.bin
+vendor/firmware/goodix-GTx8-18-01-racer.bin
 
 # FM
 system_ext/lib/fm_helium.so
@@ -530,6 +616,10 @@ vendor/firmware/a630_sqe.fw
 vendor/firmware/a650_gmu.bin
 vendor/firmware/a650_sqe.fw
 
+# HotwordEnrollment
+-product/priv-app/HotwordEnrollmentOKGoogleWM8280/HotwordEnrollmentOKGoogleWM8280.apk
+-product/priv-app/HotwordEnrollmentXGoogleWM8280/HotwordEnrollmentXGoogleWM8280.apk
+
 # IPA Firmware
 vendor/firmware/ipa_fws.b00
 vendor/firmware/ipa_fws.b01
@@ -560,6 +650,7 @@ vendor/lib64/vendor.qti.hardware.data.latency@1.0.so
 vendor/lib64/vendor.qti.latency@2.0.so
 
 # Listen
+vendor/lib/hw/sound_trigger.primary.default.so
 vendor/lib/libadpcmdec.so
 vendor/lib/libcapiv2svacnn.so
 vendor/lib/libcapiv2vop.so
@@ -658,6 +749,16 @@ vendor/lib64/vendor.qti.hardware.vpp@1.1.so
 vendor/lib64/vendor.qti.hardware.vpp@1.2.so
 vendor/lib64/vendor.qti.hardware.vpp@1.3.so
 
+# Moto ADSP Hal - (Sound Trigger Dependencies)
+vendor/bin/hw/motorola.hardware.audio.adspd@1.0-service
+vendor/etc/init/motorola.hardware.audio.adspd@1.0-service.rc
+vendor/lib/motorola.hardware.audio.adspd@1.0-impl.so
+vendor/lib/motorola.hardware.audio.adspd@1.0_vendor.so
+vendor/lib/motorola.hardware.audio.adspd@1.0.so
+vendor/lib64/vndk/libtinyalsa.so
+vendor/lib64/motorola.hardware.audio.adspd@1.0-impl.so
+vendor/lib64/motorola.hardware.audio.adspd@1.0.so
+
 # Moto Permissions
 product/etc/permissions/com.motorola.moto-uirefresh.xml
 product/etc/permissions/com.motorola.motodisplay.xml
@@ -677,9 +778,13 @@ vendor/lib64/unnhal-acc-common.so
 vendor/lib64/unnhal-acc-hta.so
 vendor/lib64/unnhal-acc-hvx.so
 
+# NFC
+vendor/firmware/st21nfc_fw.bin
+
 # OEM
 vendor/bin/expat
 vendor/bin/motobox
+vendor/etc/vhw.xml
 
 # Perf
 vendor/bin/msm_irqbalance
@@ -1043,6 +1148,8 @@ vendor/lib64/vendor.qti.imsrtpservice@3.0-service-Impl.so
 
 # Sensors
 vendor/bin/hw/vendor.qti.hardware.sensorscalibrate@1.0-service
+vendor/bin/capsense_reset
+vendor/bin/motpsd
 vendor/bin/sensors.qti
 vendor/bin/sscrpcd
 vendor/etc/init/vendor.qti.hardware.sensorscalibrate@1.0-service.rc
@@ -1050,8 +1157,41 @@ vendor/etc/init/init.vendor.sensors.rc
 vendor/etc/init/vendor.sensors.qti.rc
 vendor/etc/init/vendor.sensors.sscrpcd.rc
 vendor/etc/permissions/vendor-qti-hardware-sensorscalibrate.xml
+vendor/etc/sensors/config/default_sensors.json
+vendor/etc/sensors/config/icm4x6xx_0.json
+vendor/etc/sensors/config/lsm6ds3c_0.json
+vendor/etc/sensors/config/mmc5603x_0.json
+vendor/etc/sensors/config/mot_camgest.json
+vendor/etc/sensors/config/mot_chopchop.json
+vendor/etc/sensors/config/mot_dsp_0.json
+vendor/etc/sensors/config/mot_ltv.json
+vendor/etc/sensors/config/mot_vsync_boe_always.json
+vendor/etc/sensors/config/mot_vsync_csot_always.json
+vendor/etc/sensors/config/mot_vsync.json
+vendor/etc/sensors/config/mot_vsync_tianma_always.json
+vendor/etc/sensors/config/power_0.json
+vendor/etc/sensors/config/sns_amd.json
+vendor/etc/sensors/config/sns_amd_sw_enabled.json
+vendor/etc/sensors/config/sns_cm.json
+vendor/etc/sensors/config/sns_diag_filter.json
+vendor/etc/sensors/config/sns_fmv.json
+vendor/etc/sensors/config/sns_geomag_rv.json
+vendor/etc/sensors/config/sns_gyro_cal.json
+vendor/etc/sensors/config/sns_mag_cal.json
+vendor/etc/sensors/config/sns_rmd.json
+vendor/etc/sensors/config/sns_rotv.json
+vendor/etc/sensors/config/sns_smd.json
+vendor/etc/sensors/config/sns_tilt.json
+vendor/etc/sensors/config/sns_tilt_sw_enabled.json
+vendor/etc/sensors/config/tcs3708_boe_always.json
+vendor/etc/sensors/config/tcs3708_boeB4_always.json
+vendor/etc/sensors/config/tcs3708_csot_always.json
+vendor/etc/sensors/config/tcs3708_csotB5_always.json
+vendor/etc/sensors/config/tcs3708.json
+vendor/etc/sensors/config/tcs3708_tianma_always.json
+vendor/etc/sensors/hals.conf
+vendor/etc/sensors/sns_reg_config
 vendor/lib/hw/vendor.qti.hardware.sensorscalibrate@1.0-impl.so
-vendor/lib64/libadspd.so
 vendor/lib/libsensorcal.so
 vendor/lib/libsensorslog.so
 vendor/lib/libssc.so
@@ -1063,6 +1203,8 @@ vendor/lib64/libsensorcal.so
 vendor/lib64/libsensorslog.so
 vendor/lib64/libssc.so
 vendor/lib64/libssc_default_listener.so
+vendor/lib64/sensors.moto.so
+vendor/lib64/sensors.ssc.so
 vendor/lib64/vendor.qti.hardware.sensorscalibrate@1.0.so
 
 # Servicetracker
@@ -1104,6 +1246,7 @@ vendor/lib64/vendor.qti.hardware.scve.panorama@1.0.so
 # Thermal
 vendor/bin/thermal-engine
 vendor/etc/thermal-engine.conf
+vendor/etc/thermal-engine-racer.conf
 vendor/etc/init/init_thermal-engine.rc
 -vendor/lib/libthermalclient.so
 vendor/lib64/libsystempioctl.so
@@ -1114,6 +1257,64 @@ vendor/lib64/libsystempioctl.so
 vendor/bin/time_daemon
 vendor/etc/init/init.time_daemon.rc
 vendor/lib64/libtime_genoff.so
+
+# Touchscreen firmware
+vendor/firmware/samsung-boe-se77c-20033021-17110105-racer.bin
+vendor/firmware/samsung-boe-se77c-20033021-17110305-racer-pvt.bin
+vendor/firmware/samsung-csot-se77c-20042009-17120108-racer.bin
+vendor/firmware/samsung-csot-se77c-20042009-17120308-racer-pvt.bin
+vendor/firmware/synaptics-tianma-s3908-20052606-313204-racer.tdat
+
+# Vibrator firmware
+vendor/firmware/aw8695_haptic.bin
+vendor/firmware/aw8695_rtp_Argo_Navis.bin
+vendor/firmware/aw8695_rtp_Attentive.bin
+vendor/firmware/aw8695_rtp_Awake.bin
+vendor/firmware/aw8695_rtp.bin
+vendor/firmware/aw8695_rtp_Bird_Loop.bin
+vendor/firmware/aw8695_rtp_Brilliant_Times.bin
+vendor/firmware/aw8695_rtp_Chimey_Phone.bin
+vendor/firmware/aw8695_rtp_Complex.bin
+vendor/firmware/aw8695_rtp_Crazy_Dream.bin
+vendor/firmware/aw8695_rtp_Curve_Ball_Blend.bin
+vendor/firmware/aw8695_rtp_Digital_Phone.bin
+vendor/firmware/aw8695_rtp_Electrovision.bin
+vendor/firmware/aw8695_rtp_Ether_Shake.bin
+vendor/firmware/aw8695_rtp_Fateful_Words.bin
+vendor/firmware/aw8695_rtp_Flutey_Phone.bin
+vendor/firmware/aw8695_rtp_Future_Funk.bin
+vendor/firmware/aw8695_rtp_Future_Hi_Tech.bin
+vendor/firmware/aw8695_rtp_Girtab.bin
+vendor/firmware/aw8695_rtp_Hello.bin
+vendor/firmware/aw8695_rtp_Hexagon.bin
+vendor/firmware/aw8695_rtp_Hydra.bin
+vendor/firmware/aw8695_rtp_Insert_Coin.bin
+vendor/firmware/aw8695_rtp_Jumping_Dots.bin
+vendor/firmware/aw8695_rtp_Keys.bin
+vendor/firmware/aw8695_rtp_Loopy.bin
+vendor/firmware/aw8695_rtp_Loopy_Lounge.bin
+vendor/firmware/aw8695_rtp_Modular.bin
+vendor/firmware/aw8695_rtp_Momentum.bin
+vendor/firmware/aw8695_rtp_Morning.bin
+vendor/firmware/aw8695_rtp_Moto.bin
+vendor/firmware/aw8695_rtp_Natural.bin
+vendor/firmware/aw8695_rtp_New_Player.bin
+vendor/firmware/aw8695_rtp_Onward.bin
+vendor/firmware/aw8695_rtp_Organ_Dub.bin
+vendor/firmware/aw8695_rtp_Overclocked.bin
+vendor/firmware/aw8695_rtp_Pegasus.bin
+vendor/firmware/aw8695_rtp_Play.bin
+vendor/firmware/aw8695_rtp_Pyxis.bin
+vendor/firmware/aw8695_rtp_Regrade.bin
+vendor/firmware/aw8695_rtp_Scarabaeus.bin
+vendor/firmware/aw8695_rtp_Sceptrum.bin
+vendor/firmware/aw8695_rtp_Simple.bin
+vendor/firmware/aw8695_rtp_Solarium.bin
+vendor/firmware/aw8695_rtp_Sparse.bin
+vendor/firmware/aw8695_rtp_Terrabytes.bin
+vendor/firmware/aw8695_rtp_TJINGLE.bin
+vendor/firmware/aw8695_rtp_Verizon_Airwaves.bin
+vendor/firmware/aw8695_rtp_Zero_Hour.bin
 
 # WiFi
 vendor/bin/cnss-daemon

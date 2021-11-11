@@ -18,7 +18,7 @@ BUILD_BROKEN_DUP_RULES := true
 
 BOARD_VENDOR := motorola
 
-VENDOR_PATH := device/motorola/sm7250-common
+DEVICE_PATH := device/motorola/racer
 
 # Architecture
 TARGET_ARCH := arm64
@@ -55,7 +55,18 @@ BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_SOURCE := kernel/motorola/sm7250
+TARGET_KERNEL_CONFIG := vendor/racer_defconfig
 TARGET_KERNEL_CLANG_COMPILE := true
+
+# Kernel modules - Racer
+TARGET_MODULE_ALIASES += \
+    snd-soc-aov-trigger.ko:aov_trigger.ko \
+    snd-soc-cs35l41-spi.ko:cirrus_cs35l41-spi.ko \
+    snd-soc-cs35l41.ko:cirrus_cs35l41.ko \
+    snd-soc-cs47l35.ko:cirrus_cs47l35.ko \
+    snd-soc-madera.ko:cirrus_madera.ko \
+    snd-soc-wm-adsp.ko:cirrus_wm_adsp.ko \
+    irq-madera.ko:cirrus_irq-madera.ko
 
 # Kernel modules - Audio
 TARGET_MODULE_ALIASES += \
@@ -118,7 +129,7 @@ USE_CUSTOM_AUDIO_POLICY := 1
 USE_XML_AUDIO_POLICY_CONF := 1
 
 # Bluetooth
-BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(VENDOR_PATH)/bluetooth/include
+BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth/include
 TARGET_FWK_SUPPORTS_FULL_VALUEADDS := true
 TARGET_USE_QTI_BT_STACK := true
 
@@ -141,10 +152,11 @@ WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY ?= true
 
 # Display
 USE_DEVICE_SPECIFIC_DISPLAY := true
-DEVICE_SPECIFIC_DISPLAY_PATH := $(VENDOR_PATH)/qcom-caf/display
+DEVICE_SPECIFIC_DISPLAY_PATH := $(DEVICE_PATH)/qcom-caf/display
 MAX_VIRTUAL_DISPLAY_DIMENSION := 4096
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
+TARGET_SCREEN_DENSITY := 420
 TARGET_USES_DISPLAY_RENDER_INTENTS := true
 TARGET_USES_GRALLOC4 := true
 TARGET_USES_HWC2 := true
@@ -155,8 +167,16 @@ TARGET_ENABLE_MEDIADRM_64 := true
 
 # Filesystem
 TARGET_FS_CONFIG_GEN := \
-    $(VENDOR_PATH)/config.fs \
-    $(VENDOR_PATH)/mot_aids.fs
+    $(DEVICE_PATH)/config.fs \
+    $(DEVICE_PATH)/mot_aids.fs
+
+# FM
+BOARD_HAVE_QCOM_FM := true
+BOARD_HAS_QCA_FM_SOC := "cherokee"
+
+# FOD
+TARGET_SURFACEFLINGER_FOD_LIB := //$(DEVICE_PATH):libfod_extension.racer
+TARGET_USES_FOD_ZPOS := true
 
 # GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := $(TARGET_BOARD_PLATFORM)
@@ -166,11 +186,11 @@ TARGET_NO_RPC := true
 USE_DEVICE_SPECIFIC_GPS := true
 
 # HIDL
-DEVICE_MATRIX_FILE := $(VENDOR_PATH)/compatibility_matrix.xml
-DEVICE_MANIFEST_FILE := $(VENDOR_PATH)/manifest.xml
+DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 
 # Init
-TARGET_INIT_VENDOR_LIB := //$(VENDOR_PATH):libinit_lito
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_lito
 TARGET_RECOVERY_DEVICE_MODULES := libinit_lito
 
 # Metadata
@@ -208,7 +228,7 @@ BOARD_INCLUDE_RECOVERY_DTBO := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-TARGET_RECOVERY_FSTAB := $(VENDOR_PATH)/rootdir/etc/fstab.qcom
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
@@ -219,8 +239,8 @@ VENDOR_SECURITY_PATCH := 2020-10-01
 
 # SELinux
 include device/qcom/sepolicy_vndr/SEPolicy.mk
-BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(VENDOR_PATH)/sepolicy/private
-BOARD_VENDOR_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy/vendor
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
+BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 
 # Android Verified Boot
 BOARD_AVB_ENABLE := true
