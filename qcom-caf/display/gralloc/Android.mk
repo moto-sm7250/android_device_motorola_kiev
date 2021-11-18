@@ -50,7 +50,6 @@ LOCAL_SHARED_LIBRARIES        := $(common_libs) libqdMetaData libdl  \
                                   android.hardware.graphics.mapper@4.0
 LOCAL_CFLAGS                  := $(common_flags) $(qmaa_flags) -DLOG_TAG=\"qdgralloc\" -Wno-sign-conversion \
                                  -D__QTI_DISPLAY_GRALLOC__
-
 ifeq ($(TARGET_USES_YCRCB_CAMERA_PREVIEW),true)
     LOCAL_CFLAGS              += -DUSE_YCRCB_CAMERA_PREVIEW
 else ifeq ($(TARGET_USES_YCRCB_VENUS_CAMERA_PREVIEW),true)
