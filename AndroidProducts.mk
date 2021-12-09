@@ -15,9 +15,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/omni_kiev.mk
+    $(LOCAL_DIR)/twrp_kiev.mk
 
 COMMON_LUNCH_CHOICES := \
-    omni_kiev-user \
-    omni_kiev-userdebug \
-    omni_kiev-eng
+    twrp_kiev-user \
+    twrp_kiev-userdebug \
+    twrp_kiev-eng

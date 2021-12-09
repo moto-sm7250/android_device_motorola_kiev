@@ -26,9 +26,8 @@ See /prebuilt/README.md
 
 ```sh
 . build/envsetup.sh
-export LC_ALL=C
-lunch omni_kiev-eng
-make -j4 recoveryimage
+lunch twrp_kiev-eng
+mka adbd -j$(nproc --all) recoveryimage
 ```
 
 ### Build with TWRP installer
