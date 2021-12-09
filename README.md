@@ -18,12 +18,6 @@ Front Camera | 16 MP (f/2.2)
 
 ![Device Picture](https://fdn2.gsmarena.com/vv/pics/motorola/motorola-one-5g-ace-2.jpg)
 
-### Kernel Source
-
-See /prebuilt/README.md
-
-### How to compile
-
 ```sh
 . build/envsetup.sh
 lunch twrp_kiev-eng
