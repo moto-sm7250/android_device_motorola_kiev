@@ -27,7 +27,7 @@
 
 import /init.recovery.qcom_decrypt.rc
 
-on early-init && property:ro.boot.vbmeta.avb_version=1.0
+on early-init
     start fstab_fixup
 
 on boot
