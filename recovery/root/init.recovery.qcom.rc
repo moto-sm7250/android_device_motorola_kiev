@@ -53,7 +53,7 @@ on property:twrp.apex.loaded=true
 on firmware_mounts_complete
     start load_modules
 
-on property:sys.usb.config=mtp,adb
+on property:sys.usb.config=*
     start load_modules
 
 service load_modules /system/bin/load_modules.sh

@@ -45,6 +45,7 @@ load_modules()
 	insmod $module_path/exfat.ko
 	insmod $module_path/aw8624.ko
 	insmod $module_path/sensors_class.ko
+	insmod $module_path/mmi_relay.ko
 	insmod $module_path/sx933x_sar.ko
 	insmod $module_path/touchscreen_mmi.ko
 	insmod $module_path/focaltech_0flash_mmi.ko
