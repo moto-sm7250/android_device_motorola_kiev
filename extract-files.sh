@@ -74,6 +74,11 @@ function blob_fixup() {
     system_ext/etc/permissions/moto-telephony.xml)
         sed -i "s|system|system/system_ext|" "${2}"
         ;;
+    # Patch configureRpcThreadpool
+    vendor/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.so | vendor/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.bitra.so)
+        hexdump -ve '1/1 "%.2X"' "${2}" | sed "s/CC0A0094/1F2003D5/g" | xxd -r -p > "${TMPDIR}/${1##*/}"
+        mv "${TMPDIR}/${1##*/}" "${2}"
+        ;;
     esac
 }
 
