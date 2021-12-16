@@ -30,6 +30,9 @@ import /init.recovery.qcom_decrypt.rc
 on early-init
     start fstab_fixup
 
+on init
+    start load_modules
+
 on boot
     start health-hal-2-1
 
@@ -46,17 +49,26 @@ on property:ro.crypto.type=file
     setprop ro.crypto.state encrypted
     setprop twrp.apex.loaded true
 
-# Here run load_modules x3 to load troublesome focaltech ts
-on property:twrp.apex.loaded=true
-	start load_modules
+# Trigger for Touchscreen
+on property:crypto.ready=1 && property:hwservicemanager.ready=true
+    start load_touch
 
-on firmware_mounts_complete
-    start load_modules
+# Prop to reset Touchscreen
+on property:touch.fw.loaded=1
+    write /sys/class/touchscreen/ft8756/reset "1"
 
-on property:sys.usb.config=*
-    start load_modules
+# Fastbootd Touchscreen
+on property:sys.usb.config=fastboot
+    start load_touch
 
 service load_modules /system/bin/load_modules.sh
+    oneshot
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
+
+service load_touch /system/bin/load_touch.sh
     oneshot
     disabled
     user root
