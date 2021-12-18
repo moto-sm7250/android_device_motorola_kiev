@@ -822,7 +822,6 @@ vendor/lib64/unnhal-acc-hvx.so
 vendor/lib64/libpn557_fw.so
 
 # OEM
-vendor/bin/expat
 vendor/bin/motobox
 vendor/etc/vhw.xml
 
