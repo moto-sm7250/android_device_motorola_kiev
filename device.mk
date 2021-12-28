@@ -234,6 +234,7 @@ PRODUCT_PACKAGES += \
     init.qcom.sh \
     init.qti.fm.sh \
     init.qti.ims.sh \
+    init.recovery.lkm.rc \
     init.recovery.qcom.rc \
     init.target.rc \
     ueventd.qcom.rc
