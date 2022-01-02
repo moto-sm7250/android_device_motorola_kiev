@@ -1,18 +1,6 @@
 [
   {
     "remote": "TeamWin",
-    "repository": "android_device_qcom_common",
-    "target_path": "device/qcom/common",
-    "branch": "android-11"
-  },
-  {
-    "remote": "TeamWin",
-    "repository": "android_device_qcom_twrp-common",
-    "target_path": "device/qcom/twrp-common",
-    "branch": "android-11"
-  },
-  {
-    "remote": "TeamWin",
     "repository": "android_kernel_motorola_sm7250",
     "target_path": "kernel/motorola/sm7250",
     "branch": "android-11"
