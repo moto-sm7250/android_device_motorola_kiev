@@ -28,7 +28,7 @@ mka adbd -j$(nproc --all) recoveryimage
 
 To automatically make the twrp installer, you need to import this commit in the build/make path:
 ```sh
-https://gerrit.omnirom.org/#/c/android_build/+/33182/
+https://gerrit.twrp.me/c/android_build/+/4964
 ```
 
 Then add @osm0sis' standard twrp_abtemplate repo to a local manifest as indicated below (followed by another `repo sync` to download the repo):
