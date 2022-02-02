@@ -299,6 +299,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/idc/uinput-egis.idc:$(TARGET_COPY_OUT_VENDOR)/usr/idc/uinput-egis.idc \
     $(LOCAL_PATH)/keylayout/uinput-egis.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-egis.kl \
 
+PRODUCT_PACKAGES += \
+    android.hardware.biometrics.fingerprint@2.1.vendor
+
 # FM
 PRODUCT_PACKAGES += \
     FM2 \
