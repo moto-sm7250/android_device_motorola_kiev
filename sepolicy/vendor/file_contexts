@@ -63,6 +63,9 @@
 /(mnt/vendor)/persist/egis(/.*)?   u:object_r:fingerprint_vendor_data_file:s0
 /sys/devices/soc/0.et320(/.*)?     u:object_r:sysfs_fingerprint:s0
 
+# Awinic
+/(mnt/vendor/persist|persist)/factory/audio/aw_cali.bin    u:object_r:vendor_persist_audio_file:s0
+
 # Venus
 /sys/devices/platform/soc/aab0000.qcom,venus/subsys[0-9]+/name		        u:object_r:vendor_sysfs_ssr:s0
 /sys/devices/platform/soc/aab0000.qcom,venus/subsys[0-9]+/restart_level		u:object_r:vendor_sysfs_ssr_toggle:s0
