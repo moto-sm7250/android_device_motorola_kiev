@@ -785,6 +785,57 @@ vendor/lib64/vendor.qti.hardware.vpp@1.1.so
 vendor/lib64/vendor.qti.hardware.vpp@1.2.so
 vendor/lib64/vendor.qti.hardware.vpp@1.3.so
 
+# Moto Camera3 - (8.0.77.76)
+etc/init/cameraserver.rc
+-product/app/MotCamera2AI/MotCamera2AI.apk
+product/etc/permissions/com.motorola.camera3.xml
+product/etc/permissions/privapp-permissions-com.motorola.camera3.xml
+product/etc/permissions/com.motorola.camera3.lens.xml
+product/etc/sysconfig/hiddenapi-whitelist-com.motorola.camera3.xml
+-product/priv-app/MotCamera3/MotCamera3.apk|f9e51b1a293010d34f79e847af34252bd66cde67
+system_ext/framework/com.motorola.androidx.camera.extensions.jar
+system_ext/etc/permissions/com.motorola.androidx.camera.extensions.xml
+system_ext/etc/public.libraries-motocamera.txt
+system_ext/lib/libmcf_native_window_helper.motocamera.so
+system_ext/lib64/libmcf_native_window_helper.motocamera.so
+
+# Moto Camera3 - Libs
+product/lib64/libarcsoft_dualcam_refocus.so|cde6916a8b3c443e332c23e14229860a0e37aef0
+product/lib64/libarcsoft_scbokeh_Generic.so|aa942c19ebe3082e33c8ea8b215dc456862e8a83
+product/lib64/libarcsoft_supernight.so|efdac3f23dc19c8e0e52213c928f64819d516c64
+product/lib64/libarcsoft_superportrait.so|4a9caf400b666a7debdf2c1226398e3194be379f
+product/lib64/libas-super-slow-motion.so|06aa1863ed7884792087ce0d6e3c5e0cdd358cc1
+product/lib64/libbarhopper_v2.so|dad0b4a646f6f9e7f03b3d535dd151891645661e
+product/lib64/libbg-postproc-jni.so|c3e24f8a212951de6a1e27d00fdb7100a4de80aa
+product/lib64/libcamerax_extension_jni.so|56cb2c2726faac53c754a071dafa612fb5514b2f
+product/lib64/libc++_shared.so|52beb16998338f6406e30a33b3066cd6cd457074
+product/lib64/libc++.so|e8707820517ab7713b8ca6ac4462361e00629c26
+product/lib64/libdoc-util.so|9f84e697a83e76ff3f8afb34641a78180304b734
+product/lib64/libdynamic_depth.so|515f03132a086f15c565dd89b192ede5eeca7e29
+product/lib64/libfn-beauty-vfb-base.so|591a3ded0c4e1c35c21784d462c06c19914d4bb8
+product/lib64/libFNVfbEngineHAL.so|43a1bdc6d53330481bbd6c6f581449c368e14aed
+product/lib64/libfoundation.so|3edc848e251b6eab8d91135f85650dce8918f910
+product/lib64/libgg-dynamic_depth.so|93941196fbdb57250d10c0577ec10bc6aba688bc
+product/lib64/libgg-tensorflow-lite.so|69420bc918fe8c4affaf7857bc6ca78d31b29fe3
+product/lib64/libgif.so|310d708f0c9b60c065514c1e3f1534c8ba347c7d
+product/lib64/libjpeg.so|a51f6dde2a6d7eb11378a2575a5e6bf625a15bbb
+product/lib64/liblenovo_panorama.so|31cc6042e0cdd661fa9ccd6472058d90dfde00d8
+product/lib64/libmcf-base.so|a8a54c6f86947db31cdc93aff1524eb4a6b2f1a3
+product/lib64/libmcf-jni.so|f9314178c188926b0bbf0a04fd3a866040dfbd85
+product/lib64/libmcf-qc-fd-offline_local.so|99d2dbab152e22d6ae3d552cee3a172fc886ba24
+product/lib64/libmcf-stand-alone-sm.so|4ecf7c59aae48de3202c806241623da626d4fb73
+product/lib64/libmmcamera_faceproc2.so|1c732d58bf24c939f568cda340318e5b873dce3b
+product/lib64/libmorpho_cinema_graph.so|5536ec4c85bacc1b4718a0c29fd559993276c55c
+product/lib64/libmorpho_image_refiner_1_4_2.so|3e99884fc3ee27f9c607f5d8717acddbbddcb582
+product/lib64/libmorpho_panorama_gp3.so|8da064fb1ac5a4bb5205a67ee63efea6872221b9
+product/lib64/libmorpho_sensor_fusion.so|0d48902b404b509ef04ee648a04c83fbc24ee304
+product/lib64/libmot-cinemagraph-engine.so|cbb7adfcd9955d3aa51b1b8efceb08462f7fb797
+product/lib64/libmot-util.so|dc8f16c83011e6f216db5dab54b3e16e34f78b09
+product/lib64/libmpbase.so|07021c39abbc5c8538f6df1876a3eb3015ff9c2a
+product/lib64/libqc-snpe.so|c7d552ab711d69350fad1446721cdb12b7644cf6
+product/lib64/libsmudge_detect.so|915e44b5013096b846b87c539d92200a0b048d23
+product/lib64/libSNPE.so|ddcec410b42f85808bb8b0d8359c7a6490a934de
+
 # Moto Permissions
 system_ext/etc/permissions/com.motorola.androidx.camera.extensions.xml:vendor/etc/permissions/com.motorola.androidx.camera.extensions.xml
 product/etc/permissions/com.motorola.moto-uirefresh.xml
