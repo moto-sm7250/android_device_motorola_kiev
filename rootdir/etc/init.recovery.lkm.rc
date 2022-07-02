@@ -30,3 +30,16 @@ on init
 	insmod /vendor/lib/modules/touchscreen_mmi.ko
 	insmod /vendor/lib/modules/focaltech_0flash_mmi.ko
 	insmod /vendor/lib/modules/mmi_sigprint.ko
+
+on boot
+    start load_touch
+
+on property:sys.usb.config=fastboot
+    start load_touch
+
+service load_touch /system/bin/load_touch.sh
+    oneshot
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
