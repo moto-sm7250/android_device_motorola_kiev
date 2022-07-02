@@ -441,6 +441,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.delta_time.enable=true
 
+# Vendor Versioning
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.build.version.qcom=LA.UM.9.12.r1-12500-SMxx50.0
+
 # WiFi
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     config.disable_rtt=true
