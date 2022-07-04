@@ -1,5 +1,6 @@
 # Motorola
 vendor_public_prop(moto_boot_prop)
+vendor_public_prop(moto_camera_config_prop)
 vendor_public_prop(exported_radio_prop)
 
 # AOV
