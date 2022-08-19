@@ -116,7 +116,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.bluetooth.wipower=false \
     persist.sys.fflag.override.settings_bluetooth_hearing_aid=true \
     persist.vendor.bt.aac_vbr_frm_ctl.enabled=true \
-    persist.vendor.btstack.enable.lpa=true \
     persist.vendor.qcom.bluetooth.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac \
     persist.vendor.qcom.bluetooth.aac_vbr_ctl.enabled=true \
     persist.vendor.qcom.bluetooth.aptxadaptiver2_1_support=false \
@@ -127,7 +126,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     vendor.qcom.bluetooth.soc=cherokee
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.bluetooth.library_name=libbluetooth_qti.so \
     vendor.bluetooth.soc=cherokee
 
 # Camera
