@@ -400,7 +400,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.data.df.agg.dl_size=4096 \
     persist.data.df.mux_count=8 \
     persist.data.df.iwlan_mux=9 \
-    persist.data.df.dev_name=rmnet_usb0
+    persist.data.df.dev_name=rmnet_usb0 \
+    vendor.usb.dpl.inst.name=dpl \
+    vendor.usb.qdss.inst.name=qdss_sw \
+    vendor.usb.rmnet.func.name=gsi \
+    vendor.usb.rmnet.inst.name=rmnet \
+    vendor.usb.rndis.func.name=gsi \
+    vendor.usb.use_ffs_mtp=1 \
+    vendor.usb.use_gadget_hal=0
 
 # Sensors
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
