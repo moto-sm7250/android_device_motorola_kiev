@@ -680,6 +680,7 @@ vendor/lib64/vendor.qti.latency@2.1.so
 vendor/lib/hw/sound_trigger.primary.lito.so
 vendor/lib/libadpcmdec.so
 vendor/lib/libcapiv2svacnn.so
+vendor/lib/libcapiv2svarnn.so
 vendor/lib/libcapiv2vop.so
 vendor/lib/libgcs-calwrapper.so
 vendor/lib/libgcs-ipc.so
@@ -690,6 +691,7 @@ vendor/lib/libmulawdec.so
 vendor/lib/libjnihelper.so
 vendor/lib64/hw/sound_trigger.primary.lito.so
 vendor/lib64/libcapiv2svacnn.so
+vendor/lib64/libcapiv2svarnn.so
 vendor/lib64/libcapiv2vop.so
 vendor/lib64/libgcs-calwrapper.so
 vendor/lib64/libgcs-ipc.so
