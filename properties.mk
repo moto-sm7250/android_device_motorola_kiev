@@ -116,14 +116,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.bluetooth.wipower=false \
     persist.sys.fflag.override.settings_bluetooth_hearing_aid=true \
     persist.vendor.bt.aac_vbr_frm_ctl.enabled=true \
-    persist.vendor.qcom.bluetooth.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac \
     persist.vendor.qcom.bluetooth.aac_vbr_ctl.enabled=true \
     persist.vendor.qcom.bluetooth.aptxadaptiver2_1_support=false \
     persist.vendor.qcom.bluetooth.enable.splita2dp=true \
     persist.vendor.qcom.bluetooth.scram.enabled=false \
     persist.vendor.qcom.bluetooth.soc=cherokee \
     persist.vendor.qcom.bluetooth.twsp_state.enabled=false \
-    vendor.qcom.bluetooth.soc=cherokee
+    vendor.qcom.bluetooth.soc=cherokee \
+    persist.bluetooth.a2dp_offload.disabled=false \
+    persist.bluetooth.a2dp_offload.cap=sbc-aptx-aptxtws-aptxhd-aac-ldac
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     vendor.bluetooth.soc=cherokee
