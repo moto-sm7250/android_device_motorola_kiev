@@ -136,7 +136,6 @@ PRODUCT_PACKAGES += \
     libvolumelistener \
     tinymix \
     libtinycompress \
-    libtinycompress.vendor \
     libgui_vendor
 
 # audio.primary.lito shim
