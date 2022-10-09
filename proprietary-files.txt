@@ -785,10 +785,12 @@ system_ext/etc/public.libraries-motocamera.txt
 system_ext/lib/libmcf_native_window_helper.motocamera.so
 system_ext/lib64/libmcf_native_window_helper.motocamera.so
 
+# Moto Camera3 - Libs (from berlin S1RGS32.53-18-22-4)
+product/lib64/libarcsoft_supernight.so|b5740dc9e0dceae9bdb89f3cc3b100222dc4bc4f
+
 # Moto Camera3 - Libs
 product/lib64/libarcsoft_dualcam_refocus.so|cde6916a8b3c443e332c23e14229860a0e37aef0
 product/lib64/libarcsoft_scbokeh_Generic.so|aa942c19ebe3082e33c8ea8b215dc456862e8a83
-product/lib64/libarcsoft_supernight.so|efdac3f23dc19c8e0e52213c928f64819d516c64
 product/lib64/libarcsoft_superportrait.so|4a9caf400b666a7debdf2c1226398e3194be379f
 product/lib64/libas-super-slow-motion.so|06aa1863ed7884792087ce0d6e3c5e0cdd358cc1
 product/lib64/libbarhopper_v2.so|dad0b4a646f6f9e7f03b3d535dd151891645661e
