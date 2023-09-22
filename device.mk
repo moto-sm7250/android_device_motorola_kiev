@@ -60,7 +60,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/keylayout/uinput-egis.kl:$(TARGET_COPY_OUT_VENDOR)/usr/keylayout/uinput-egis.kl
 
 PRODUCT_PACKAGES += \
-    android.hardware.biometrics.fingerprint@2.1.vendor
+    android.hardware.biometrics.fingerprint@2.1.vendor \
+    com.motorola.hardware.biometric.fingerprint@1.0.vendor
 
 # FM
 PRODUCT_PACKAGES += \

@@ -15,8 +15,8 @@ vendor/firmware/aw882xx_afe_params.bin
 vendor/firmware/aw882xx_spk_reg.bin
 
 # Audio - Prebuilt
-vendor/lib/hw/audio.primary.lito.so
-vendor/lib/vndk/libtinyalsa.so
+vendor/lib/hw/audio.primary.lito.so:vendor/lib/hw/audio.primary.lito-moto.so
+vendor/lib/vndk/libtinyalsa.so:vendor/lib/libtinyalsa-moto.so
 vendor/lib/libmotaudioutils.so
 vendor/lib/libtinycompress_vendor.so
 
@@ -30,12 +30,9 @@ vendor/etc/camera/arcsoft_calibration_u_dc.bin
 vendor/etc/camera/dual_golden_wide.bin
 vendor/etc/camera/vidhance_calibration
 vendor/lib/libcamera_nn_stub.so
-vendor/lib/libcamerapostproc.so
 vendor/lib/libcamxexternalformatutils.so
 vendor/lib/libcamxfacialfeatures.so
 vendor/lib/libcamxfdalgo.so
-vendor/lib/libcamxfdengine.so
-vendor/lib/libcamxifestriping.so
 vendor/lib/libcamximageformatutils.so
 vendor/lib/libcamxncs.so
 vendor/lib/libcamxstatscore.so
@@ -164,14 +161,12 @@ vendor/lib64/libmulticam_image_optical_zoom.so
 vendor/lib64/libmulticam_optical_zoom_control.so
 vendor/lib64/libmulticam_video_optical_zoom.so
 vendor/lib64/libofflinelog.so
-vendor/lib64/libsnsapi.so
 vendor/lib64/libsns_device_mode_stub.so
 vendor/lib64/libsnsdiaglog.so
 vendor/lib64/libsns_fastRPC_util.so
 vendor/lib64/libsns_low_lat_stream_stub.so
 vendor/lib64/libsns_registry_skel.so
 vendor/lib64/libswregistrationalgo.so
-vendor/lib64/libswvdec.so
 vendor/lib64/libvidhance.so
 vendor/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.so
 vendor/lib64/vendor.qti.hardware.camera.postproc@1.0-service-impl.bitra.so
@@ -199,7 +194,6 @@ vendor/etc/display/advanced_sf_offsets.xml
 vendor/bin/hw/android.hardware.biometrics.fingerprint@2.1-service-ets
 vendor/etc/init/android.hardware.biometrics.fingerprint@2.1-service-ets2.rc
 vendor/etc/init/init.ets.rc
-vendor/lib64/com.motorola.hardware.biometric.fingerprint@1.0.so
 vendor/lib64/libets_fp_et5.so
 vendor/lib64/libets_teeclient.so
 vendor/lib64/vendor.egistec.hardware.fingerprint@2.0.so
@@ -212,13 +206,11 @@ system_ext/framework/com.android.hotwordenrollment.common.util.jar
 
 # Listen
 vendor/lib/hw/sound_trigger.primary.lito.so
-vendor/lib64/hw/sound_trigger.primary.lito.so
 
 # Media
 vendor/etc/media_lagoon/video_system_specs.json
 
 # Moto Camera3
-etc/init/cameraserver.rc
 -product/app/MotCamera2AI/MotCamera2AI.apk
 product/etc/permissions/com.motorola.camera3.xml
 product/etc/permissions/privapp-permissions-com.motorola.camera3.xml
