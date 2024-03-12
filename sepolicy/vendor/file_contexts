@@ -6,7 +6,7 @@
 /(vendor|system/vendor)/bin/hw/android\.hardware\.light@2\.0-service\.kiev                       u:object_r:hal_light_default_exec:s0
 
 # Vendor init scripts
-/system/bin/load_touch\.sh                                                 u:object_r:vendor_qti_init_shell_exec:s0
+/(vendor|system/vendor)/bin/load_touch\.sh                                                 u:object_r:vendor_qti_init_shell_exec:s0
 /(vendor|system/vendor)/bin/init\.mmi\.charge\.sh                          u:object_r:vendor_qti_init_shell_exec:s0
 /(vendor|system/vendor)/bin/init\.oem\.(fingerprint|fingerprint2)\.sh      u:object_r:vendor_init_fingerprint_exec:s0
 

@@ -24,7 +24,7 @@ sh_binary {
 sh_binary {
     name: "load_touch.sh",
     src: "bin/load_touch.sh",
-    recovery: true,
+    vendor: true,
 }
 
 prebuilt_etc {
