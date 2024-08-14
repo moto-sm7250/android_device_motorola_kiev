@@ -89,6 +89,27 @@
       "ResetOnInit": true
     },
     {
+      "Name": "UclampTAMin",
+      "Path": "/dev/cpuctl/top-app/cpu.uclamp.min",
+      "Values": [
+        "0",
+        "78",
+        "100"
+      ],
+      "DefaultIndex": 0,
+      "ResetOnInit": true
+    },
+    {
+      "Name": "UclampFgMin",
+      "Path": "/dev/cpuctl/foreground/cpu.uclamp.min",
+      "Values": [
+        "0",
+        "100"
+      ],
+      "DefaultIndex": 0,
+      "ResetOnInit": true
+    },
+    {
       "Name": "GPUMaxFreq",
       "Path": "/sys/class/kgsl/kgsl-3d0/max_pwrlevel",
       "Values": [
@@ -143,42 +164,6 @@
       "Values": [
         "10000",
         "80"
-      ],
-      "ResetOnInit": true
-    },
-    {
-      "Name": "TASchedtuneBoost",
-      "Path": "/dev/stune/top-app/schedtune.boost",
-      "Values": [
-        "30",
-        "10"
-      ],
-      "ResetOnInit": true
-    },
-    {
-      "Name": "TASchedtuneHighCap",
-      "Path": "/dev/stune/top-app/schedtune.prefer_high_cap",
-      "Values": [
-        "1",
-        "0"
-      ],
-      "ResetOnInit": true
-    },
-    {
-      "Name": "CDSchedtuneBoost",
-      "Path": "/dev/stune/camera-daemon/schedtune.boost",
-      "Values": [
-        "1",
-        "0"
-      ],
-      "ResetOnInit": true
-    },
-    {
-      "Name": "CDSchedtuneHighCap",
-      "Path": "/dev/stune/camera-daemon/schedtune.prefer_high_cap",
-      "Values": [
-        "1",
-        "0"
       ],
       "ResetOnInit": true
     },
@@ -374,7 +359,7 @@
       "Values": [
         "1",
         "0"
-      ],
+      ]
     },
     {
       "Name": "PowerHALMainState",
@@ -464,15 +449,9 @@
     },
     {
       "PowerHint": "INTERACTION",
-      "Node": "TASchedtuneBoost",
+      "Node": "UclampTAMin",
       "Duration": 0,
-      "Value": "30"
-    },
-    {
-      "PowerHint": "INTERACTION",
-      "Node": "TASchedtuneHighCap",
-      "Duration": 0,
-      "Value": "1"
+      "Value": "78"
     },
     {
       "PowerHint": "INTERACTION",
@@ -554,12 +533,6 @@
     },
     {
       "PowerHint": "LAUNCH",
-      "Node": "TASchedtuneHighCap",
-      "Duration": 3000,
-      "Value": "1"
-    },
-    {
-      "PowerHint": "LAUNCH",
       "Node": "CPUBigClusterMaxFreq",
       "Duration": 3000,
       "Value": "9999999"
@@ -575,6 +548,18 @@
       "Node": "CPULittleClusterMinFreq",
       "Duration": 3000,
       "Value": "9999999"
+    },
+    {
+      "PowerHint": "LAUNCH",
+      "Node": "UclampTAMin",
+      "Duration": 3000,
+      "Value": "100"
+    },
+    {
+      "PowerHint": "LAUNCH",
+      "Node": "UclampFgMin",
+      "Duration": 3000,
+      "Value": "100"
     },
     {
       "PowerHint": "LAUNCH",
@@ -685,18 +670,6 @@
       "Value": "9999999"
     },
     {
-      "PowerHint": "CAMERA_LAUNCH",
-      "Node": "CDSchedtuneBoost",
-      "Duration": 1000,
-      "Value": "1"
-    },
-    {
-      "PowerHint": "CAMERA_LAUNCH",
-      "Node": "CDSchedtuneHighCap",
-      "Duration": 1000,
-      "Value": "1"
-    },
-    {
       "PowerHint": "CAMERA_STREAMING_MID",
       "Node": "CDCpusetCpus",
       "Duration": 0,
@@ -733,18 +706,6 @@
       "Value": "10"
     },
     {
-      "PowerHint": "CAMERA_STREAMING_MID",
-      "Node": "CDSchedtuneBoost",
-      "Duration": 0,
-      "Value": "1"
-    },
-    {
-      "PowerHint": "CAMERA_STREAMING_MID",
-      "Node": "CDSchedtuneHighCap",
-      "Duration": 0,
-      "Value": "1"
-    },
-    {
       "PowerHint": "CAMERA_STREAMING_HIGH",
       "Node": "CDCpusetCpus",
       "Duration": 0,
@@ -761,18 +722,6 @@
       "Node": "CPUBigClusterMaxFreq",
       "Duration": 0,
       "Value": "2131200"
-    },
-    {
-      "PowerHint": "CAMERA_STREAMING_HIGH",
-      "Node": "CDSchedtuneBoost",
-      "Duration": 0,
-      "Value": "1"
-    },
-    {
-      "PowerHint": "CAMERA_STREAMING_HIGH",
-      "Node": "CDSchedtuneHighCap",
-      "Duration": 0,
-      "Value": "1"
     },
     {
       "PowerHint": "CAMERA_STREAMING_HIGH",
@@ -833,18 +782,6 @@
       "Node": "CPUBigClusterMaxFreq",
       "Duration": 0,
       "Value": "2131200"
-    },
-    {
-      "PowerHint": "CAMERA_STREAMING_ULTRA",
-      "Node": "CDSchedtuneBoost",
-      "Duration": 0,
-      "Value": "1"
-    },
-    {
-      "PowerHint": "CAMERA_STREAMING_ULTRA",
-      "Node": "CDSchedtuneHighCap",
-      "Duration": 0,
-      "Value": "1"
     },
     {
       "PowerHint": "CAMERA_STREAMING_ULTRA",
@@ -935,18 +872,6 @@
       "Node": "LLCCBWSampleMs",
       "Duration": 0,
       "Value": "10"
-    },
-    {
-      "PowerHint": "CAMERA_STREAMING_FRONT_OR_PREVIEW_ONLY",
-      "Node": "CDSchedtuneBoost",
-      "Duration": 0,
-      "Value": "1"
-    },
-    {
-      "PowerHint": "CAMERA_STREAMING_FRONT_OR_PREVIEW_ONLY",
-      "Node": "CDSchedtuneHighCap",
-      "Duration": 0,
-      "Value": "1"
     },
     {
       "PowerHint": "CAMERA_STREAMING_LOW",
