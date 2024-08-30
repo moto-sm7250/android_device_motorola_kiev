@@ -1031,6 +1031,36 @@
       "Value": "800000000"
     },
     {
+      "PowerHint": "GAME_LOADING",
+      "Node": "CPUBigClusterMinFreq",
+      "Duration": 0,
+      "Value": "9999999"
+    },
+    {
+      "PowerHint": "GAME_LOADING",
+      "Node": "CPULittleClusterMinFreq",
+      "Duration": 0,
+       "Value": "9999999"
+    },
+    {
+      "PowerHint": "GAME",
+      "Node": "CPUBigClusterMinFreq",
+      "Duration": 0,
+      "Value": "9999999"
+    },
+    {
+      "PowerHint": "GAME",
+      "Node": "CPULittleClusterMinFreq",
+      "Duration": 0,
+       "Value": "9999999"
+    },
+    {
+      "PowerHint": "GAME",
+      "Node": "GPUMinFreq",
+      "Duration": 0,
+      "Value": "800000000"
+    },
+    {
       "PowerHint": "DISPLAY_IDLE",
       "Node": "CPULittleClusterMinFreq",
       "Duration": 0,
